@@ -1,0 +1,81 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Editor"
+        xmlns:ViewModel="clr-namespace:Editor.ViewModel" 
+        xmlns:Views="clr-namespace:Editor.Views" 
+        xmlns:Controls="clr-namespace:Editor.Controls" 
+        x:Class="Editor.MainWindow"
+        mc:Ignorable="d"
+        Title="FSH Editor v1.0" Height="525" Width="525" SizeToContent="Height" Loaded="WindowLoaded" Icon="Images/AppIcon.png">
+
+  <Window.DataContext>
+    <ViewModel:ArchiveFileViewModel/>
+  </Window.DataContext>
+
+  <Window.Background>
+    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+      <GradientStop Color="#FF00079E"/>
+      <GradientStop Color="White" Offset="1"/>
+    </LinearGradientBrush>
+  </Window.Background>
+
+  <TabControl x:Name="tabControl" VerticalAlignment="Top" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}" Width="Auto" TabStripPlacement="Top" Visibility="Visible" MinHeight="325">
+    <TabItem Header="Summary">
+      <Grid x:Name="fileGrid" Background="#FFE5E5E5" Drop="SummaryGridDrop" AllowDrop="True" >
+        <Label x:Name="labelOpenFile" Content="Drag file to open" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="32" Opacity="0.8" HorizontalContentAlignment="Center" Margin="0,60,0,0" Visibility="{Binding StartSequenceVisibility}"/>
+        <TextBlock x:Name="textBlockMostRecent" Margin="0,120,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="40" Cursor="Hand" Visibility="{Binding StartSequenceVisibility}" >
+          <Hyperlink Command="{Binding OpenMostRecentFileCommand}" CommandParameter="{Binding}">Or use the most recent file</Hyperlink>
+        </TextBlock>
+        <Views:FileSummary x:Name="fileSummaryControl" HorizontalAlignment="Left" VerticalAlignment="Top" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" Visibility="{Binding OperationalTabVisibility}"/>
+        <Controls:WaitSpinner HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Height="60" Width="60" Visibility="{Binding WaitSpinnerVisibility, NotifyOnSourceUpdated=True}" />
+      </Grid>
+    </TabItem>
+    <TabItem Header="Groups" Visibility="{Binding OperationalTabVisibility}">
+      <ScrollViewer>
+        <StackPanel x:Name="stackPanelGroups" Orientation="Vertical" VerticalAlignment="Stretch">
+          <ItemsControl ItemsSource="{Binding GroupViewModels}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Views:Group/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+    <TabItem Header="Routes" Visibility="{Binding OperationalTabVisibility}">
+      <ScrollViewer>
+        <StackPanel x:Name="stackPanelRoutes" Orientation="Vertical" VerticalAlignment="Stretch">
+          <ItemsControl ItemsSource="{Binding RouteViewModels}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Views:Route/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+    <TabItem Header="Tracks" Visibility="{Binding OperationalTabVisibility}">
+      <ScrollViewer>
+        <StackPanel x:Name="stackPanelTracks" Orientation="Vertical" VerticalAlignment="Stretch">
+          <ItemsControl ItemsSource="{Binding TrackMetadataViewModels}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Views:Track/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+    <TabItem Header="Standalone Waypoints" Visibility="{Binding OperationalTabVisibility}">
+      <ScrollViewer>
+        <Views:SimpleWaypointSummary DataContext="{Binding SimpleWaypointsSummaryViewModel}"/>
+      </ScrollViewer>
+    </TabItem>
+  </TabControl>
+</Window>
