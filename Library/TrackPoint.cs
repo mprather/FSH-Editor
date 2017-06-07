@@ -20,7 +20,11 @@ namespace FSH {
 
 		private short depth;
 
-		private short c;
+    // ========================================================================
+    // Note: This variable appears to be a health state flag. If 0, the lat/lon 
+    //       values appear to be legit. If -1, readings are near 0,0.
+    // ========================================================================
+    private short c;
 
     // ========================================================================
     // The following variables are backing fields used to hold the 
@@ -62,9 +66,9 @@ namespace FSH {
 			this.depth = reader.ReadInt16();
 
 			this.c = reader.ReadInt16();
-			//System.Diagnostics.Debug.Assert(this.c == 0);
+      System.Diagnostics.Debug.Assert(this.c == 0 || this.c == -1, "Proposed Valid flag is not 0 or -1");
 
-			System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.depth + ", c: " + this.c + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
+      System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.depth + ", c: " + this.c + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
 
     }  // End of Deserialize
 
