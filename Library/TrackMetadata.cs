@@ -66,9 +66,15 @@ namespace FSH {
     public override void Deserialize(BinaryReader reader) {
 
 			this.a = reader.ReadChar();
-			this.items = reader.ReadInt16();
+      System.Diagnostics.Debug.Assert(this.a == 1);
+
+      this.items = reader.ReadInt16();
 			this.items2 = reader.ReadInt16();
-			this.b = reader.ReadInt16();
+      System.Diagnostics.Debug.Assert(this.items == this.items2);
+
+      this.b = reader.ReadInt16();
+      System.Diagnostics.Debug.Assert(this.b == 0);
+
       this.lengthInMeters = reader.ReadInt32();
 
 			this.startNorth = reader.ReadInt32();
@@ -87,8 +93,9 @@ namespace FSH {
 			this.Name = CleanString(this.name);
 
 			this.j = reader.ReadChar();
+      System.Diagnostics.Debug.Assert(this.j == 0);
 
-			this.Segments = reader.ReadByte();
+      this.Segments = reader.ReadByte();
 
 			this.guids = new ulong[this.Segments];
 
