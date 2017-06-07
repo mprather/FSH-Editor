@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using FSH.Enums;
 
 namespace FSH {
-	
+
   public class TrackMetadata : SerializableData {
 
 		private char a;
@@ -26,31 +26,38 @@ namespace FSH {
 		private ushort endTemperature;
 		private int endDepth;
 
-		private char i;
-
 		private char[] name;
-		
+    
+    private char trackColor;
+
 		private char j;
     
 		private ulong[] guids;
 
-		public string Name { get; set; }
-    
     /// <summary>
     /// Length in NM
     /// </summary>
-    public double Length { 
+    public double Length {
       get {
         return this.lengthInMeters * .00053996;
       }
       set {
-        this.lengthInMeters = (int) (value / .00053996);
-      } 
+        this.lengthInMeters = (int)(value / .00053996);
+      }
     }
 
+    public string Name { get; set; }
+    
     public byte Segments { get; set; }
 
-    public List<TrackPoint> Points { get; set; }
+    public Color Color { 
+      get {
+        return (Color)this.trackColor;
+      }
+      set {
+        this.trackColor = (char) value;
+      } 
+    }
 
     public override ushort CalculateSize() {
       return (ushort)(1 + 2 + 2 + 2 + 2 + 2 + 4 + 4 + 2 + 4 + 4 + 4 + 2 + 4 + 1 + 16 + 1 + 1 + this.guids.Length * 8);
@@ -74,7 +81,7 @@ namespace FSH {
 			this.endTemperature = reader.ReadUInt16();
 			this.endDepth = reader.ReadInt32();
 
-			this.i = reader.ReadChar();
+			this.trackColor = reader.ReadChar();
 
 			this.name = reader.ReadChars(16);
 			this.Name = CleanString(this.name);
@@ -138,7 +145,7 @@ namespace FSH {
 			writer.Write(this.endTemperature);
 			writer.Write(this.endDepth);
 
-			writer.Write(this.i);
+			writer.Write(this.trackColor);
 
       // ----------------------------------------------------------------------
       // Note: We have found the E-120W does not return clean data for this field.

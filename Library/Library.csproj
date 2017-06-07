@@ -43,6 +43,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="Enums\BlockType.cs" />
     <Compile Include="ArchiveFile.cs" />
+    <Compile Include="Enums\Color.cs" />
     <Compile Include="Flob.cs" />
     <Compile Include="Enums\FlobType.cs" />
     <Compile Include="Group.cs" />
