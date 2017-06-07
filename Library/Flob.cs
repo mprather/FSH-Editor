@@ -55,9 +55,7 @@ namespace FSH {
 
 				Block block = new Block();
 				block.Deserialize(reader);
-
-				System.Diagnostics.Debug.WriteLine("Type: " + block.Type.ToString("X") + ", Data Length: " + block.DataLength + ", Status: " + block.Status);
-
+        
 				switch (block.Type) {
 					case BlockType.Group:
 						Group group = new Group();

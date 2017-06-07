@@ -38,7 +38,7 @@ namespace FSH {
 			this.Type       = (BlockType) reader.ReadUInt16();
 			this.Status     = reader.ReadUInt16();
 
-			System.Diagnostics.Debug.WriteLine("[Block] ID: " + this.ID + ", Data Length: " + this.DataLength + ", Status: " + this.Status);
+			System.Diagnostics.Debug.WriteLine("[" + this.Type + "] ID: " + this.ID + ", Data Length: " + this.DataLength + ", Status: " + this.Status);
 
 		}  // End of Deserialize
 
