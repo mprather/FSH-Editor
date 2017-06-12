@@ -15,9 +15,9 @@ namespace FSH {
 	public class WaypointData : SerializableData {
 
 		private char[] rawName                           = null;
-		private char[] comment                           = null;
+		private char[] rawComment                        = null;
 
-    private byte rawNameLength;
+    private byte nameLength;
     private byte commentLength;
     
     private char[] d;
@@ -25,6 +25,7 @@ namespace FSH {
     private int j;
 
     private string name                              = null;
+    private string comment                           = null;
 
     private int north;
     private int east;
@@ -65,17 +66,24 @@ namespace FSH {
 		
 		public string Name { 
       get {
-        return new string(rawName);
+        return this.name;
       }
       set {
-        this.rawNameLength = (byte) TrimString(value, ref this.name, ref this.rawName);
+        this.nameLength = (byte) TrimString(value, ref this.name, ref this.rawName);
       }
     }  // End of property Name
 
-    public string Comment { get; set; }
+    public string Comment {
+      get {
+        return this.comment;
+      }
+      set {
+        this.commentLength = (byte)TrimString(value, ref this.comment, ref this.rawComment, true);
+      }
+    }  // End of property Comment
 
     public override ushort CalculateSize() {
-      return (ushort) (4 + 4 + 12 + 1 + 2 + 4 + this.Timestamp.CalculateSize() + 1 + 1 + 1 + 4 + this.rawNameLength + this.commentLength);
+      return (ushort) (4 + 4 + 12 + 1 + 2 + 4 + this.Timestamp.CalculateSize() + 1 + 1 + 1 + 4 + this.nameLength + this.commentLength);
     }  // End of CalculateSize
 
     public override void Deserialize(BinaryReader reader) {
@@ -96,17 +104,17 @@ namespace FSH {
 			this.i             = reader.ReadChar();
 			//System.Diagnostics.Debug.Assert(this.I == 0);
 
-			this.rawNameLength    = reader.ReadByte();
+			this.nameLength    = reader.ReadByte();
       this.commentLength = reader.ReadByte();
 
 			this.j             = reader.ReadInt32();
 			System.Diagnostics.Debug.Assert(this.j == 0, "Expected J value of 0 not found");
 
-			this.rawName          = reader.ReadChars(this.rawNameLength);
-			this.comment       = reader.ReadChars(this.commentLength);
+			this.rawName       = reader.ReadChars(this.nameLength);
+			this.rawComment    = reader.ReadChars(this.commentLength);
 
-			this.Name          = new string(this.rawName);
-			this.Comment       = new string(this.comment);
+			this.name          = new string(this.rawName);
+			this.comment       = new string(this.rawComment);
 
 			System.Diagnostics.Debug.WriteLine("  (wpd) " + this.Name + ": North: " + this.north + ", East: " + this.east + ", Depth: " + this.Depth + ", Symbol: " + Convert.ToInt32(this.Symbol).ToString("X") + " --");
 
@@ -122,11 +130,11 @@ namespace FSH {
 			writer.Write(this.Depth);
 			this.Timestamp.Serialize(writer);
 			writer.Write(this.i);
-			writer.Write(this.rawNameLength);
+			writer.Write(this.nameLength);
 			writer.Write(this.commentLength);
 			writer.Write(this.j);
 			writer.Write(this.rawName);
-			writer.Write(this.comment);
+			writer.Write(this.rawComment);
 
     }  // End of Serialize
 
