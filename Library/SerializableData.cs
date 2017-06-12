@@ -13,7 +13,8 @@ namespace FSH {
 
   public abstract class SerializableData {
 
-    public const int MaximumStringLength             = 16;
+    public const int MaximumCommentLength            = 32;
+    public const int MaximumNameLength               = 16;
 
     public virtual ushort CalculateSize() {
       
@@ -51,17 +52,19 @@ namespace FSH {
     /// </summary>
     /// <param name="original"></param>
     /// <returns></returns>
-    protected char[] NullPaddedString(string original) {
+    protected char[] NullPaddedString(string original, bool isComment) {
 
-      char[] temp = new char[SerializableData.MaximumStringLength];
+      int maxStringLength = isComment ? SerializableData.MaximumCommentLength : SerializableData.MaximumNameLength;
+
+      char[] temp = new char[maxStringLength];
       original.CopyTo(0, temp, 0, original.Length);
       return temp;
 
     }  // End of NullPaddedString
+    
+    protected int TrimString(string input, ref string destination, ref char[] rawDestination, bool isComment) {
 
-    protected int TrimString(string input, ref string destination, ref char[] rawDestination) {
-
-      if (input.Length > SerializableData.MaximumStringLength) {
+      if (input.Length > (isComment ? SerializableData.MaximumCommentLength : SerializableData.MaximumNameLength)) {
         throw new ApplicationException();
       }
 

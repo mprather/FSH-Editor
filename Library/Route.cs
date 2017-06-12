@@ -39,7 +39,7 @@ namespace FSH {
         return this.name;
       }
       set {
-        this.rawNameLength = (char)TrimString(value, ref this.name, ref this.rawName);
+        this.rawNameLength = (char)TrimString(value, ref this.name, ref this.rawName, false);
       }
     }  // End of property Name
 
@@ -54,11 +54,11 @@ namespace FSH {
       }
       set {
         // ----------------------------------------------------------------------------        
-        // NOTE: Since the E-120W does not use comments, there is no way to determine 
-        //       if comments are limited to 16 characters as with names. Simply using
-        //       the same pattern established with names.
+        // NOTE: Since the E-120W does not use comments within Routes, there is no way 
+        //       to determine if comments are limited to 32 characters. Simply using 
+        //       the same pattern established with other comments.
         // ----------------------------------------------------------------------------        
-        this.commentLength = (char)TrimString(value, ref this.comment, ref this.rawComment);
+        this.commentLength = (char)TrimString(value, ref this.comment, ref this.rawComment, true);
       } 
     }  // End of property Comment
 

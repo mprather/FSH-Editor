@@ -69,7 +69,7 @@ namespace FSH {
         return this.name;
       }
       set {
-        this.nameLength = (byte) TrimString(value, ref this.name, ref this.rawName);
+        this.nameLength = (byte) TrimString(value, ref this.name, ref this.rawName, false);
       }
     }  // End of property Name
 

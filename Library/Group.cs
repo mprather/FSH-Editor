@@ -28,7 +28,7 @@ namespace FSH {
         return this.name;
       }
 			set {
-        this.rawNameLength = (short) TrimString(value, ref this.name, ref this.rawName);
+        this.rawNameLength = (short) TrimString(value, ref this.name, ref this.rawName, false);
       }
 		}  // End of property Name
 

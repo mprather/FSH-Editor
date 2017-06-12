@@ -160,7 +160,7 @@ namespace FSH {
       //       between the null-terminator and MaximumStringLength. We have 
       //       chosen to fully pad the space with null.
       // ----------------------------------------------------------------------
-      this.name = NullPaddedString(this.Name);
+      this.name = NullPaddedString(this.Name, false);
 
 			writer.Write(this.name);
       
