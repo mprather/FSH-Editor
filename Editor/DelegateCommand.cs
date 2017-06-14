@@ -47,7 +47,7 @@ namespace Editor {
 		[DebuggerStepThrough]
 		bool ICommand.CanExecute(object parameter) {
 
-			System.Diagnostics.Debug.WriteLine("CanExecute<T>: " + Name + ", " + parameter);
+			//System.Diagnostics.Debug.WriteLine("CanExecute<T>: " + Name + ", " + parameter);
 
 			if (parameter == null &&
 					typeof(T).IsValueType) {
