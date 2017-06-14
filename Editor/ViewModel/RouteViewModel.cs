@@ -36,10 +36,7 @@ namespace Editor.ViewModel {
 				return route.Name;
 			}
 			set {
-        if (value.Length > SerializableData.MaximumStringLength) {
-          value = value.Substring(0, SerializableData.MaximumStringLength);
-        }
-        route.Name = value;
+        route.Name = Utilities.TrimmedString(value, false);
 				OnPropertyChanged("RouteName");
 			}
     }  // End of property RouteName

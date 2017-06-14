@@ -19,20 +19,20 @@ namespace Editor.ViewModel {
         return this.simpleWaypoint.Data.Name;
       }
       set {
-        this.simpleWaypoint.Data.Name = value;
+        this.simpleWaypoint.Data.Name = Utilities.TrimmedString(value, false);
         OnPropertyChanged("Name");
       }
-    }
+    }  // End of property Name
 
     public string Comment {
       get {
         return this.simpleWaypoint.Data.Comment;
       }
       set {
-        this.simpleWaypoint.Data.Comment = value;
+        this.simpleWaypoint.Data.Comment = Utilities.TrimmedString(value, true);
         OnPropertyChanged("Comment");
       }
-    }
+    }  // End of property Comment
 
     public double Depth {
       get {
@@ -46,7 +46,7 @@ namespace Editor.ViewModel {
         this.simpleWaypoint.Data.Depth = (int)(value * 12 * 2.54);
         OnPropertyChanged("Depth");
       }
-    }
+    }  // End of property Depth
 
     public double Temperature {
       get {
@@ -59,8 +59,9 @@ namespace Editor.ViewModel {
       }
       set {
         this.simpleWaypoint.Data.Temperature = (ushort)(((value - 32) / 1.8 + 273) * 100);
+        OnPropertyChanged("Temperature");
       }
-    }
+    }  // End of property Temperature
 
     public char Symbol {
       get {
@@ -70,23 +71,23 @@ namespace Editor.ViewModel {
         this.simpleWaypoint.Data.Symbol = value;
         OnPropertyChanged("Symbol");
       }
-    }
+    }  // End of property Symbol
 
     public double Latitude {
       get {
         return this.simpleWaypoint.Data.Latitude;
       }
-    }
+    }  // End of property Latitude
 
     public double Longitude {
       get {
         return this.simpleWaypoint.Data.Longitude;
       }
-    }
+    }  // End of property Longitude
 
     public SimpleWaypointViewModel(SimpleWaypoint simpleWaypoint) {
       this.simpleWaypoint = simpleWaypoint;
-    }
+    }  // End of ctor
 
-  }
+  }  // End of SimpleWaypointViewModel class
 }

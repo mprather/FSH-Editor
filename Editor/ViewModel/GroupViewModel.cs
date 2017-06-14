@@ -21,10 +21,7 @@ namespace Editor.ViewModel {
 				return group.Name;
 			}
 			set {
-        if (value.Length > SerializableData.MaximumStringLength) {
-          value = value.Substring(0, SerializableData.MaximumStringLength);
-        }
-        group.Name = value;
+        group.Name = Utilities.TrimmedString(value, false);
 				OnPropertyChanged("GroupName");
 			}
 		}  // End of property GroupName
