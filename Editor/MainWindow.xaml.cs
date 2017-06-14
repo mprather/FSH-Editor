@@ -11,8 +11,6 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows;
 
-using FSH;
-
 using Editor.ViewModel;
 
 namespace Editor {
@@ -27,10 +25,7 @@ namespace Editor {
 		}
 
 		private void WindowLoaded(object sender, RoutedEventArgs e) {
-
-      //ViewModel.ArchiveFileViewModel archiveFile = new ViewModel.ArchiveFileViewModel();
-      //this.DataContext = archiveFile;
-
+    
       try {
 				using (StreamReader reader = new StreamReader(new IsolatedStorageFileStream("FSHEditor.LastFile", FileMode.Open, IsolatedStorageFile.GetUserStoreForAssembly()))) {
 					App.Current.Properties["ArchiveFile"] = reader.ReadLine();
@@ -55,7 +50,7 @@ namespace Editor {
 
       }
 
-    }
+    }  // End of SummaryGridDrop
 
 	}
 }
