@@ -101,8 +101,12 @@ namespace FSH {
 			this.Timestamp     = new Timestamp();
 			this.Timestamp.Deserialize(reader);
 
-			this.i             = reader.ReadChar();
-			//System.Diagnostics.Debug.Assert(this.I == 0);
+      // ----------------------------------------------------------------------
+      // NOTE: this value changes between 0 and 1. format spec reports it stays
+      //       at zero but that is not the case with the E-120W.
+      // ----------------------------------------------------------------------
+      this.i             = reader.ReadChar();
+			//System.Diagnostics.Debug.Assert(this.i == 0);
 
 			this.nameLength    = reader.ReadByte();
       this.commentLength = reader.ReadByte();
