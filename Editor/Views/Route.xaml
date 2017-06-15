@@ -17,15 +17,15 @@
           </Button>
         </DockPanel>
       </Expander.Header>
-      <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" AutoGenerateColumns="False" IsReadOnly="True">
-        <DataGrid.Columns>
-          <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnDataErrors=true}" />
-          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" />
-          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" />
-          <!--<DataGridTextColumn Header="Depth" Binding="{Binding Path=Depth}" />-->
-					<!--<DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" />-->
-        </DataGrid.Columns>
-      </DataGrid>
+      <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" >-->
+        <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" AutoGenerateColumns="False" IsReadOnly="True">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnDataErrors=true}" MinWidth="125"/>
+            <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125"/>
+            <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      <!--</ScrollViewer>-->
     </Expander>
     <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.5" CornerRadius="2" />
   </Grid>

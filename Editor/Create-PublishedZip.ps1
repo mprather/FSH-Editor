@@ -1,5 +1,5 @@
 $logFile = "log.txt"
-$zipFile = "$((gl).ProviderPath)\FSH_Editor_v1.1_$($(date).tostring('yyyy_MM_dd')).zip"
+$zipFile = "$((gl).ProviderPath)\FSH_Editor_v1.1.zip"
 
 
 # =============================================================================

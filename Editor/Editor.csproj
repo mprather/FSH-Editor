@@ -61,8 +61,10 @@
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="Model\FileManager.cs" />
     <Compile Include="PropertyBaseChanged.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="ViewModel\ArchiveFileViewModel.cs" />
     <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\MappingViewModel.cs" />
@@ -84,8 +86,8 @@
     <Compile Include="Views\SimpleWaypointSummary.xaml.cs">
       <DependentUpon>SimpleWaypointSummary.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Track.xaml.cs">
-      <DependentUpon>Track.xaml</DependentUpon>
+    <Compile Include="Views\TracksSummary.xaml.cs">
+      <DependentUpon>TracksSummary.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\WaitSpinner.xaml">
       <SubType>Designer</SubType>
@@ -119,7 +121,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Track.xaml">
+    <Page Include="Views\TracksSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,7 +143,11 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Create-PublishedZip.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Images\AppIcon.pdn" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -171,6 +177,11 @@
     <Resource Include="Images\AppIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if "$(Configuration)" == "Release" (
+  C:\windows\sysnative\WindowsPowerShell\v1.0\powershell.exe -File Create-PublishedZip.ps1
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

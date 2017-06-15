@@ -50,24 +50,37 @@ namespace Editor.ViewModel {
       }
     }  // End of property ExportCommand
     
-    public string TrackName {
+    public FSH.Enums.Color Color {
+      get {
+        return trackMetadata.Color;
+      }
+      set {
+        trackMetadata.Color = value;
+        OnPropertyChanged("Color");
+      }
+    }  // End of property Color
+
+    public double Length {
+      get {
+        return trackMetadata.Length;
+      }
+    }  // End of property Length
+
+    public string Name {
       get {
         return trackMetadata.Name;
       }
       set {
-        if (value.Length > SerializableData.MaximumStringLength) {
-          value = value.Substring(0, SerializableData.MaximumStringLength);
-        }
-        trackMetadata.Name = value;
-        OnPropertyChanged("TrackName");
+        trackMetadata.Name = Utilities.TrimmedString(value, false);
+        OnPropertyChanged("Name");
       }
-    }  // End of property TrackName
+    }  // End of property Name
 
-    public string Info {
+    public int Segments {
       get {
-        return trackMetadata.Length.ToString("0.00") + " NM, " + this.TrackPointViewModels.Count + " points, " + trackMetadata.Segments + " segments";
+        return trackMetadata.Segments;
       }
-    }  // End of property Info
+    }  // End of Segments
 
     public ObservableCollection<TrackPointViewModel> TrackPointViewModels { get; set; }
 
@@ -88,7 +101,7 @@ namespace Editor.ViewModel {
 
     private void CreateMap() {
 
-      string fileName = Properties.Resources.MapFolderName + "\\" + this.TrackName + ".mapview.html";
+      string fileName = Properties.Resources.MapFolderName + "\\" + this.Name + ".mapview.html";
 
       // Ensure the holding folder exists...
       System.IO.Directory.CreateDirectory(Properties.Resources.MapFolderName);
@@ -108,7 +121,7 @@ namespace Editor.ViewModel {
            js += "new Microsoft.Maps.Location(" + q.Latitude.ToString("00.00000") + "," + q.Longitude.ToString("00.00000") + ")";
         }
 
-        writer.WriteLine(HtmlTemplate.Replace("{TrackName}", this.TrackName).Replace("{locations}", js));
+        writer.WriteLine(HtmlTemplate.Replace("{TrackName}", this.Name).Replace("{locations}", js));
 
       }  // End of using writer mapview
 
@@ -131,7 +144,7 @@ namespace Editor.ViewModel {
       gpx.AppendChild(track);
 
       XmlElement name = doc.CreateElement("name");
-      name.InnerText = this.TrackName;
+      name.InnerText = this.Name;
       track.AppendChild(name);
 
       XmlElement source = doc.CreateElement("src");
@@ -162,7 +175,7 @@ namespace Editor.ViewModel {
       // Ensure the holding folder exists...
       System.IO.Directory.CreateDirectory(Properties.Resources.GPXFolderName);
 
-      doc.Save(Properties.Resources.GPXFolderName + "\\" + this.TrackName + ".gpx");
+      doc.Save(Properties.Resources.GPXFolderName + "\\" + this.Name + ".gpx");
 
       System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
         UseShellExecute = true,

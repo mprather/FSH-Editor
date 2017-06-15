@@ -14,13 +14,14 @@
           <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
         </Button>
       </DockPanel>
-      <DataGrid ItemsSource="{Binding SimpleWaypoints}" AutoGenerateColumns="False" IsReadOnly="True">
+      <DataGrid ItemsSource="{Binding SimpleWaypoints}" AutoGenerateColumns="False" >
         <DataGrid.Columns>
-          <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
-          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" />
-          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" />
-          <!--<DataGridTextColumn Header="Depth" Binding="{Binding Path=Depth}" />-->
-          <!--<DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" />-->
+          <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="125"/>
+          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125" IsReadOnly="True"/>
+          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125" IsReadOnly="True"/>
+          <DataGridTextColumn Header="Comment" Binding="{Binding Path=Comment}" MinWidth="225"/>
+          <!--<DataGridTextColumn Header="Depth" Binding="{Binding Path=Depth}" />
+          <DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" />-->
         </DataGrid.Columns>
 
       </DataGrid>

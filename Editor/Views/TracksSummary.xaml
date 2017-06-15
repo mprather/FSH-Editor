@@ -8,7 +8,7 @@
              xmlns:fsh="clr-namespace:FSH.Enums;assembly=FSH.Library"
              xmlns:sys="clr-namespace:System;assembly=mscorlib" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
                         ObjectType="{x:Type sys:Enum}"
@@ -30,7 +30,7 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <Button x:Name="buttonExport" Command="{Binding ExportCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" FontWeight="Bold" FontSize="10.667" Padding="2,1,2,1" Background="Transparent" BorderThickness="0" DockPanel.Dock="Right" Margin="4,0,0,0">
+                  <Button x:Name="buttonExport" Command="{Binding ExportCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" FontWeight="Bold" FontSize="10.667" Padding="2,1,2,1" Background="Transparent" BorderThickness="0" DockPanel.Dock="Right" Margin="6,0,0,0">
                     <Grid>
                       <Label Margin="2,-1">GPX</Label>
                       <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.75" CornerRadius="5" />

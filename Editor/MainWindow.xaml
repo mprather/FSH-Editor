@@ -9,7 +9,7 @@
         xmlns:Controls="clr-namespace:Editor.Controls" 
         x:Class="Editor.MainWindow"
         mc:Ignorable="d"
-        Title="FSH Editor v1.0" Height="525" Width="525" SizeToContent="Height" Loaded="WindowLoaded" Icon="Images/AppIcon.png">
+        Title="FSH Editor v1.1" Height="525" Width="650" SizeToContent="Height" Loaded="WindowLoaded" Icon="Images/AppIcon.png">
 
   <Window.DataContext>
     <ViewModel:ArchiveFileViewModel/>
@@ -61,19 +61,11 @@
     </TabItem>
     <TabItem Header="Tracks" Visibility="{Binding OperationalTabVisibility}">
       <ScrollViewer>
-        <StackPanel x:Name="stackPanelTracks" Orientation="Vertical" VerticalAlignment="Stretch">
-          <ItemsControl ItemsSource="{Binding TrackMetadataViewModels}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Views:Track/>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </StackPanel>
+        <Views:TracksSummary />
       </ScrollViewer>
     </TabItem>
     <TabItem Header="Standalone Waypoints" Visibility="{Binding OperationalTabVisibility}">
-      <ScrollViewer>
+      <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <Views:SimpleWaypointSummary DataContext="{Binding SimpleWaypointsSummaryViewModel}"/>
       </ScrollViewer>
     </TabItem>
