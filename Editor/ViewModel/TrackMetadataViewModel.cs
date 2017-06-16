@@ -148,12 +148,23 @@ namespace Editor.ViewModel {
       track.AppendChild(name);
 
       XmlElement source = doc.CreateElement("src");
-      source.InnerText = "Exported using the FSH Editor";
+      source.InnerText = "FSH Editor";
       track.AppendChild(source);
 
-      XmlElement comment = doc.CreateElement("cmt");
-      comment.InnerText = "Track length (NM): " + this.trackMetadata.Length + ", Export Timestamp: " + DateTime.UtcNow;
-      track.AppendChild(comment);
+      XmlElement description = doc.CreateElement("desc");
+      description.InnerXml = @"<![CDATA[Track length (NM): " + this.trackMetadata.Length + Environment.NewLine +
+                              "FSH Editor export date: " + DateTime.UtcNow + " GMT]]>";
+      track.AppendChild(description);
+
+      XmlElement link = doc.CreateElement("link");
+      XmlAttribute href = doc.CreateAttribute("href");
+      href.InnerText = "http://www.okeanvoyaging.com/fsh-editor-download";
+      XmlElement text = doc.CreateElement("text");
+      text.InnerText = "Archive.FSH data exported by the FSH Editor";
+
+      link.Attributes.Append(href);
+      link.AppendChild(text);
+      track.AppendChild(link);
 
       XmlElement segment = doc.CreateElement("trkseg");
       track.AppendChild(segment);
