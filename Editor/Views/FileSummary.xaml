@@ -24,8 +24,6 @@
 				<Label Content="Tracks"/>
 				<Label Content="Waypoints"/>
 				<Label Content="Archived data"/>
-				<Label Content="Size"/>
-
 			</StackPanel>
 
 			<StackPanel HorizontalAlignment="Left" Margin="10,4,0,0" Grid.Column="1" Width="170">
@@ -34,7 +32,6 @@
         <Label Content="{Binding TrackMetadataViewModels.Count}" />
         <Label Content="{Binding SimpleWaypointsSummaryViewModel.SimpleWaypoints.Count}" />
 				<Label Content="{Binding ArchivePresent}" />
-				<Label Content="{Binding FileSize}" />
 			</StackPanel>
 
 		</Grid>
