@@ -133,66 +133,32 @@ namespace Editor.ViewModel {
     }  // End of CreateMap
 
     private void Export() {
+
+      Utilities.CreateGPXDocument("trk",
+                                  this.Name,
+                                  "Track length(NM): " + this.trackMetadata.Length + Environment.NewLine + "FSH Editor export date: " + DateTime.UtcNow + " GMT",
+                                  x => {
+
+                                    XmlElement segment = x.CreateElement("trkseg");
+                                    x.DocumentElement.FirstChild.AppendChild(segment);
+
+                                    foreach (var q in this.TrackPointViewModels) {
+                                      
+                                      if (Math.Abs(q.Latitude) < 0.00001 || Math.Abs(q.Longitude) < 0.00001) {
+                                        System.Diagnostics.Debug.WriteLine("Errant data (" + q.Latitude + "," + q.Longitude + ")");
+                                        continue;
+                                      }
+
+                                      XmlElement point = x.CreateElement("trkpt");
+                                      point.SetAttribute("lat", q.Latitude.ToString());
+                                      point.SetAttribute("lon", q.Longitude.ToString());
+
+                                      segment.AppendChild(point);
+
+                                    }
+
+                                  });
       
-      XmlDocument doc = new XmlDocument();
-
-      XmlElement gpx = doc.CreateElement("gpx");
-      gpx.SetAttribute("creator", "FSH Editor");
-      doc.AppendChild(gpx);
-
-      XmlElement track = doc.CreateElement("trk");
-      gpx.AppendChild(track);
-
-      XmlElement name = doc.CreateElement("name");
-      name.InnerText = this.Name;
-      track.AppendChild(name);
-
-      XmlElement source = doc.CreateElement("src");
-      source.InnerText = "FSH Editor";
-      track.AppendChild(source);
-
-      XmlElement description = doc.CreateElement("desc");
-      description.InnerXml = @"<![CDATA[Track length (NM): " + this.trackMetadata.Length + Environment.NewLine +
-                              "FSH Editor export date: " + DateTime.UtcNow + " GMT]]>";
-      track.AppendChild(description);
-
-      XmlElement link = doc.CreateElement("link");
-      XmlAttribute href = doc.CreateAttribute("href");
-      href.InnerText = "http://www.okeanvoyaging.com/fsh-editor-download";
-      XmlElement text = doc.CreateElement("text");
-      text.InnerText = "Archive.FSH data exported by the FSH Editor";
-
-      link.Attributes.Append(href);
-      link.AppendChild(text);
-      track.AppendChild(link);
-
-      XmlElement segment = doc.CreateElement("trkseg");
-      track.AppendChild(segment);
-
-      foreach (var q in this.TrackPointViewModels) {
-        if (Math.Abs(q.Latitude) < 0.00001 || Math.Abs(q.Longitude) < 0.00001) {
-          System.Diagnostics.Debug.WriteLine("Errant data (" + q.Latitude + "," + q.Longitude + ")");
-          continue;
-        }
-        
-        XmlElement point = doc.CreateElement("trkpt");
-        point.SetAttribute("lat", q.Latitude.ToString());
-        point.SetAttribute("lon", q.Longitude.ToString());
-
-        segment.AppendChild(point);
-
-      }
-
-      // Ensure the holding folder exists...
-      System.IO.Directory.CreateDirectory(Properties.Resources.GPXFolderName);
-
-      doc.Save(Properties.Resources.GPXFolderName + "\\" + this.Name + ".gpx");
-
-      System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
-        UseShellExecute = true,
-        FileName = Properties.Resources.GPXFolderName
-      });
-
     }  // End of Export
 
   }
