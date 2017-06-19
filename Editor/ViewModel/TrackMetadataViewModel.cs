@@ -149,11 +149,7 @@ namespace Editor.ViewModel {
                                         continue;
                                       }
 
-                                      XmlElement point = x.CreateElement("trkpt");
-                                      point.SetAttribute("lat", q.Latitude.ToString());
-                                      point.SetAttribute("lon", q.Longitude.ToString());
-
-                                      segment.AppendChild(point);
+                                      segment.AppendChild(Utilities.CreateWaypointElement(x, "trkpt", q.Latitude, q.Longitude));
 
                                     }
 
