@@ -15,32 +15,21 @@ namespace Editor {
       root.SetAttribute("creator", "FSH Editor");
       doc.AppendChild(root);
 
-      XmlElement mainElement = doc.CreateElement(itemType);
-      root.AppendChild(mainElement);
+      if (!String.IsNullOrEmpty(itemType)) {
+        
+        XmlElement mainElement = doc.CreateElement(itemType);
+        root.AppendChild(mainElement);
 
-      XmlElement name = doc.CreateElement("name");
-      name.InnerText = itemName;
-      mainElement.AppendChild(name);
+        mainElement.AppendChild(CreateNameElement(doc, itemName));
 
-      if (!String.IsNullOrEmpty(itemDescription)) {
-        XmlElement description = doc.CreateElement("desc");
-        description.InnerXml = @"<![CDATA[" + itemDescription + "]]>";
-        mainElement.AppendChild(description);
+        if (!String.IsNullOrEmpty(itemDescription)) {
+          mainElement.AppendChild(CreateDescriptionElement(doc, itemDescription));
+        }
+
+        mainElement.AppendChild(CreateSourceElement(doc));
+        mainElement.AppendChild(CreateLinkElement(doc));
+
       }
-
-      XmlElement source = doc.CreateElement("src");
-      source.InnerText = "FSH Editor";
-      mainElement.AppendChild(source);
-
-      XmlElement link = doc.CreateElement("link");
-      XmlAttribute href = doc.CreateAttribute("href");
-      href.InnerText = "http://www.okeanvoyaging.com/fsh-editor-download";
-      XmlElement text = doc.CreateElement("text");
-      text.InnerText = "Archive.FSH data exported by the FSH Editor";
-
-      link.Attributes.Append(href);
-      link.AppendChild(text);
-      mainElement.AppendChild(link);
 
       if (x != null) {
         x(doc);
@@ -57,6 +46,56 @@ namespace Editor {
       });
       
     }  // End of CreateGPXDocument
+
+    public static XmlElement CreateDescriptionElement(XmlDocument x, string cdata) {
+      
+      XmlElement description = x.CreateElement("desc");
+      description.InnerXml   = @"<![CDATA[" + cdata + "]]>";
+      return description;
+
+    }  // End of CreateDescriptionElement
+
+    public static XmlElement CreateLinkElement(XmlDocument x) {
+      
+      XmlElement link    = x.CreateElement("link");
+      XmlAttribute href  = x.CreateAttribute("href");
+      href.InnerText     = "http://www.okeanvoyaging.com/fsh-editor-download";
+      XmlElement text    = x.CreateElement("text");
+      text.InnerText     = "Archive.FSH data exported by the FSH Editor";
+
+      link.Attributes.Append(href);
+      link.AppendChild(text);
+
+      return link;
+
+    }  // End of CreateLinkElement
+
+    public static XmlElement CreateNameElement(XmlDocument x, string text) {
+
+      XmlElement name  = x.CreateElement("name");
+      name.InnerText   = text;
+      return name;
+
+    }  // End of CreateNameElement
+
+    public static XmlElement CreateSourceElement(XmlDocument x) {
+      
+      XmlElement source  = x.CreateElement("src");
+      source.InnerText   = "FSH Editor";
+
+      return source;
+
+    }  // End of CreateSourceElement
+
+    public static XmlElement CreateWaypointElement(XmlDocument x, string elementName, double lat, double lon) {
+      
+      XmlElement waypoint = x.CreateElement("wpt");
+      waypoint.SetAttribute("lat", lat.ToString());
+      waypoint.SetAttribute("lon", lon.ToString());
+
+      return waypoint;
+
+    }  // End of CreateWaypointElement
 
     public static string TrimmedString(string value, bool isComment) {
       int maxLength = isComment ? SerializableData.MaximumCommentLength : SerializableData.MaximumNameLength;
