@@ -89,7 +89,7 @@ namespace Editor {
 
     public static XmlElement CreateWaypointElement(XmlDocument x, string elementName, double lat, double lon) {
       
-      XmlElement waypoint = x.CreateElement("wpt");
+      XmlElement waypoint = x.CreateElement(elementName);
       waypoint.SetAttribute("lat", lat.ToString());
       waypoint.SetAttribute("lon", lon.ToString());
 
