@@ -6,7 +6,10 @@ This software has been released under GPL v3.0 license.
 
 */
 
+using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Xml;
 
 using FSH;
 
@@ -32,7 +35,21 @@ namespace Editor.ViewModel {
 			}
 		}  // End of property WaypointCount
 
-		public ObservableCollection<WaypointViewModel> WaypointViewModels { get; set; }
+    public ICommand ExportCommand {
+      get {
+        return new DelegateCommand<GroupViewModel>(
+          "ExportCommand",
+          parameter => {
+            if (parameter != null) {
+              parameter.Export();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property ExportCommand
+
+    public ObservableCollection<WaypointViewModel> WaypointViewModels { get; set; }
 
 	  public GroupViewModel (Group group, Flob parent) {
 
@@ -76,6 +93,29 @@ namespace Editor.ViewModel {
       });
 
     }  // End of CreateMap
+
+    private void Export() {
+
+      Utilities.CreateGPXDocument(null,
+                                  this.GroupName,
+                                  null,
+                                  x => {
+
+                                    foreach (var q in this.WaypointViewModels) {
+
+                                      XmlElement waypoint = Utilities.CreateWaypointElement(x, "wpt", q.Latitude, q.Longitude);
+                                      x.DocumentElement.AppendChild(waypoint);
+
+                                      waypoint.AppendChild(Utilities.CreateNameElement(x, q.Name));
+                                      waypoint.AppendChild(Utilities.CreateDescriptionElement(x, Utilities.AddExportTimestamp(q.Comment)));
+                                      waypoint.AppendChild(Utilities.CreateSourceElement(x));
+                                      waypoint.AppendChild(Utilities.CreateLinkElement(x));
+
+                                    }
+
+                                  });
+
+    }  // End of Export
 
   }
 }

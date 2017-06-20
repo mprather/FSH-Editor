@@ -6,8 +6,10 @@ This software has been released under GPL v3.0 license.
 
 */
 
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Xml;
 
 using FSH;
 
@@ -30,8 +32,22 @@ namespace Editor.ViewModel {
 				);
 			}
 		}  // End of property CreateRouteMap
+    
+    public ICommand ExportCommand {
+      get {
+        return new DelegateCommand<RouteViewModel>(
+          "ExportCommand",
+          parameter => {
+            if (parameter != null) {
+              parameter.Export();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property ExportCommand
 
-		public string RouteName {
+    public string RouteName {
 			get {
 				return route.Name;
 			}
@@ -92,7 +108,53 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
 			});
 
 		}  // End of DisplayRouteMap
+        
+    private void Export() {
 
-	}
+      Utilities.CreateGPXDocument("rte",
+                                  this.RouteName,
+                                  this.route.Comment,
+                                  x => {
+
+                                    XmlNamespaceManager manager = new XmlNamespaceManager(x.NameTable);
+                                    x.DocumentElement.SetAttribute("xmlns:opencpn", "http://www.opencpn.org");
+
+                                    XmlElement extensions = x.CreateElement("extensions");
+                                    x.DocumentElement.FirstChild.AppendChild(extensions);
+
+                                    // ----------------------------------------------------------------------------
+                                    // NOTE: OpenCPN is hard-coded to use the "opencpn" prefix, which is a bug 
+                                    //       on their part.
+                                    // ----------------------------------------------------------------------------
+                                    XmlElement start = x.CreateElement("opencpn", "start", "http://www.opencpn.org");
+                                    start.InnerText = this.WaypointViewModels[0].Name;
+                                    extensions.AppendChild(start);
+
+                                    XmlElement end = x.CreateElement("opencpn", "end", "http://www.opencpn.org");
+                                    end.InnerText = this.WaypointViewModels[this.WaypointViewModels.Count-1].Name;
+                                    extensions.AppendChild(end);
+
+                                    foreach (var q in this.WaypointViewModels) {
+
+                                      XmlElement point = Utilities.CreateWaypointElement(x, "rtept", q.Latitude, q.Longitude);
+                                      x.DocumentElement.FirstChild.AppendChild(point);
+
+                                      point.AppendChild(Utilities.CreateNameElement(x, q.Name));
+
+                                      if (!String.IsNullOrEmpty(q.Comment)) {
+                                        point.AppendChild(Utilities.CreateDescriptionElement(x, q.Comment));
+                                      }
+
+                                      XmlElement symbol = x.CreateElement("sym");
+                                      symbol.InnerText = "circle";
+                                      point.AppendChild(symbol);
+                                      
+                                    }
+
+                                  });
+     
+    }  // End of Export
+    
+  }
 
 }

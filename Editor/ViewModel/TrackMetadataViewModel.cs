@@ -136,7 +136,7 @@ namespace Editor.ViewModel {
 
       Utilities.CreateGPXDocument("trk",
                                   this.Name,
-                                  "Track length(NM): " + this.trackMetadata.Length + Environment.NewLine + "FSH Editor export date: " + DateTime.UtcNow + " GMT",
+                                  "Track length(NM): " + this.trackMetadata.Length,
                                   x => {
 
                                     XmlElement segment = x.CreateElement("trkseg");

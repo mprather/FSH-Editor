@@ -4,20 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Editor.Views"
+             xmlns:Controls="clr-namespace:Editor.Controls"  
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="500">
   <Grid>
     <Expander IsExpanded="False" Margin="4,2,4,4" MaxHeight="500" >
       <Expander.Header>
-        <DockPanel Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}">
-          <TextBox Text="{Binding RouteName}" Width="175" VerticalContentAlignment="Center" Padding="2,1,2,1" Margin="2" FontSize="13.333"/>
+        <DockPanel Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" LastChildFill="False">
+          <TextBox Text="{Binding RouteName}" Width="175" VerticalContentAlignment="Center" Padding="2,1,2,1" Margin="2" FontSize="13.333" DockPanel.Dock="Left"/>
           <Label Content="{Binding WaypointCount}" Margin="10,0,0,0" Width="175"/>
-          <Button x:Name="buttonPlotRoute" Margin="0,0,28,0" Command="{Binding CreateRouteMap}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
-              <Image Source="/FSH Editor;component/Images/BluePushPin.jpg" Width="14" />
-          </Button>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Controls:GPXExportButton />
+            <Button x:Name="buttonPlotRoute" Margin="10,0,28,0" Command="{Binding CreateRouteMap}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
+                <Image Source="/FSH Editor;component/Images/BluePushPin.jpg" Width="14" />
+            </Button>
+          </StackPanel>
         </DockPanel>
       </Expander.Header>
-      <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" >-->
         <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" AutoGenerateColumns="False" IsReadOnly="True">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnDataErrors=true}" MinWidth="125"/>
@@ -25,7 +28,6 @@
             <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125"/>
           </DataGrid.Columns>
         </DataGrid>
-      <!--</ScrollViewer>-->
     </Expander>
     <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.5" CornerRadius="2" />
   </Grid>

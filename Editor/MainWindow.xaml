@@ -1,5 +1,4 @@
-﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,8 +8,7 @@
         xmlns:Controls="clr-namespace:Editor.Controls" 
         x:Class="Editor.MainWindow"
         mc:Ignorable="d"
-        Title="FSH Editor v1.1" Height="525" Width="650" SizeToContent="Height" Loaded="WindowLoaded" Icon="Images/AppIcon.png">
-
+        Title="FSH Editor v1.2" Height="525" Width="650" SizeToContent="Height" Loaded="WindowLoaded" >
   <Window.DataContext>
     <ViewModel:ArchiveFileViewModel/>
   </Window.DataContext>

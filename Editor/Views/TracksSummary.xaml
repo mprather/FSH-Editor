@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Editor.Views"
              xmlns:r="clr-namespace:Editor"
              xmlns:fsh="clr-namespace:FSH.Enums;assembly=FSH.Library"
+             xmlns:Controls="clr-namespace:Editor.Controls"  
              xmlns:sys="clr-namespace:System;assembly=mscorlib" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
@@ -30,12 +31,7 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <Button x:Name="buttonExport" Command="{Binding ExportCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" FontWeight="Bold" FontSize="10.667" Padding="2,1,2,1" Background="Transparent" BorderThickness="0" Margin="6,0,0,0">
-                    <Grid>
-                      <Label Margin="2,-1">GPX</Label>
-                      <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.75" CornerRadius="5" />
-                    </Grid>
-                  </Button>
+                  <Controls:GPXExportButton />
                   <Button x:Name="buttonPlot" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}"  VerticalAlignment="Center" Cursor="Arrow" ForceCursor="True" Margin="14,0,10,0" BorderThickness="0" Background="Transparent" >
                     <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
                   </Button>

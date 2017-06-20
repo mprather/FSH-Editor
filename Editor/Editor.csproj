@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -57,6 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GPXExportButton.xaml.cs">
+      <DependentUpon>GPXExportButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
@@ -89,6 +95,10 @@
     <Compile Include="Views\TracksSummary.xaml.cs">
       <DependentUpon>TracksSummary.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\GPXExportButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\WaitSpinner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,7 +184,7 @@
     <Resource Include="Images\MappingPin.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\AppIcon.png" />
+    <Resource Include="Images\AppIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -6,7 +6,11 @@ using FSH;
 namespace Editor {
 
   public static class Utilities {
-    
+
+    public static string AddExportTimestamp(string text) {
+      return text + (String.IsNullOrEmpty(text) ? "" : Environment.NewLine) + "FSH Editor export date: " + DateTime.UtcNow + " GMT";
+    }  // End of ExportTimestamp
+
     public static void CreateGPXDocument(string itemType, string itemName, string itemDescription, Action<XmlDocument> x) {
       
       XmlDocument doc = new XmlDocument();
@@ -21,11 +25,7 @@ namespace Editor {
         root.AppendChild(mainElement);
 
         mainElement.AppendChild(CreateNameElement(doc, itemName));
-
-        if (!String.IsNullOrEmpty(itemDescription)) {
-          mainElement.AppendChild(CreateDescriptionElement(doc, itemDescription));
-        }
-
+        mainElement.AppendChild(CreateDescriptionElement(doc, AddExportTimestamp(itemDescription)));
         mainElement.AppendChild(CreateSourceElement(doc));
         mainElement.AppendChild(CreateLinkElement(doc));
 
