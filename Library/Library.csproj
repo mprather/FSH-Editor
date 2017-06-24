@@ -54,8 +54,8 @@
     <Compile Include="Route.cs" />
     <Compile Include="RouteEndPointHeader.cs" />
     <Compile Include="RouteWaypointHeader.cs" />
-    <Compile Include="RouteWaypoint.cs" />
-    <Compile Include="SimpleWaypoint.cs" />
+    <Compile Include="WaypointReference.cs" />
+    <Compile Include="StandaloneWaypoint.cs" />
     <Compile Include="Timestamp.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="TrackMetadata.cs" />

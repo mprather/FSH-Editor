@@ -98,7 +98,7 @@ namespace FSH {
 			this.b             = reader.ReadUInt16();
 
 			this.rawName       = reader.ReadChars(this.rawNameLength);
-			this.rawComment       = reader.ReadChars(this.commentLength);
+			this.rawComment    = reader.ReadChars(this.commentLength);
 
 			for (int i = 0; i < this.idCount; i++) {
 				this.Guids.Add(reader.ReadInt64());

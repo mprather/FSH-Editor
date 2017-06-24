@@ -4,7 +4,7 @@
 		Route            = 0x21,
 		Track            = 0x0d,
 		TrackMetadata    = 0x0e,
-		SimpleWaypoint   = 0x01,
+		StandaloneWaypoint   = 0x01,
 		Last             = 65535
 	}
 }

@@ -81,8 +81,8 @@ namespace FSH {
 						md.Deserialize(reader);
 						block.Data = md;
 						break;
-					case BlockType.SimpleWaypoint:
-						SimpleWaypoint waypoint = new SimpleWaypoint();
+					case BlockType.StandaloneWaypoint:
+						StandaloneWaypoint waypoint = new StandaloneWaypoint();
 						waypoint.Deserialize(reader);
 						block.Data = waypoint;
 						break;

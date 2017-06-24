@@ -13,7 +13,7 @@ namespace FSH {
   /// <summary>
   /// Simple waypoints are not associated with any group. These are effectively stand-alone waypoints.
   /// </summary>
-  public class SimpleWaypoint : SerializableData {
+  public class StandaloneWaypoint : SerializableData {
 
 	  public long ID { get; set; }
 

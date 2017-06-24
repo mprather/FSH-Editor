@@ -64,7 +64,7 @@
     </TabItem>
     <TabItem Header="Standalone Waypoints" Visibility="{Binding OperationalTabVisibility}">
       <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <Views:SimpleWaypointSummary DataContext="{Binding SimpleWaypointsSummaryViewModel}"/>
+        <Views:StandaloneWaypointSummary DataContext="{Binding StandaloneWaypointsSummaryViewModel}"/>
       </ScrollViewer>
     </TabItem>
   </TabControl>

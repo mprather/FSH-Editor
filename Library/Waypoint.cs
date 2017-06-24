@@ -10,7 +10,7 @@ using System.IO;
 
 namespace FSH {
 	
-  public class Waypoint : SerializableData {
+  public abstract class Waypoint : SerializableData {
 
 		private int latitude;
 		private int longitude;

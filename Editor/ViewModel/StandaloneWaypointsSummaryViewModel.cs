@@ -13,11 +13,11 @@ using System.Xml;
 
 namespace Editor.ViewModel {
 
-  public class SimpleWaypointsSummaryViewModel : MappingViewModel {
+  public class StandaloneWaypointsSummaryViewModel : MappingViewModel {
 
     public ICommand ExportCommand {
       get {
-        return new DelegateCommand<SimpleWaypointsSummaryViewModel>(
+        return new DelegateCommand<StandaloneWaypointsSummaryViewModel>(
           "ExportCommand",
           parameter => {
             if (parameter != null) {
@@ -29,32 +29,32 @@ namespace Editor.ViewModel {
       }
     }  // End of property ExportCommand
 
-    public ObservableCollection<SimpleWaypointViewModel> SimpleWaypoints { get; set; }
+    public ObservableCollection<StandaloneWaypointViewModel> StandaloneWaypoints { get; set; }
 
-    public SimpleWaypointsSummaryViewModel() {
-      this.SimpleWaypoints = new ObservableCollection<SimpleWaypointViewModel>();
+    public StandaloneWaypointsSummaryViewModel() {
+      this.StandaloneWaypoints = new ObservableCollection<StandaloneWaypointViewModel>();
     }  // End of ctor
 
     protected override void CreateMap() {
       
       base.CreateMap();
 
-      string fileName = Properties.Resources.MapFolderName + "\\SimpleWaypoints.mapview.html";
+      string fileName = Properties.Resources.MapFolderName + "\\StandaloneWaypoints.mapview.html";
 
       string locations = null;
       string options = null;
 
-      for (int i = 0; i < this.SimpleWaypoints.Count; i++) {
+      for (int i = 0; i < this.StandaloneWaypoints.Count; i++) {
         if (!string.IsNullOrEmpty(locations)) {
           locations += ",";
           options += ",";
         }
-        locations += "new Microsoft.Maps.Location(" + this.SimpleWaypoints[i].Latitude.ToString("00.00000") + ", " + this.SimpleWaypoints[i].Longitude.ToString("00.00000") + ")";
-        options += "{title: \"" + this.SimpleWaypoints[i].Name + "\", color: \"red\"}";
+        locations += "new Microsoft.Maps.Location(" + this.StandaloneWaypoints[i].Latitude.ToString("00.00000") + ", " + this.StandaloneWaypoints[i].Longitude.ToString("00.00000") + ")";
+        options += "{title: \"" + this.StandaloneWaypoints[i].Name + "\", color: \"red\"}";
       }
 
       using (System.IO.StreamWriter writer = new System.IO.StreamWriter(fileName)) {
-        writer.WriteLine(HtmlTemplate.Replace("{PageTitle}", "Simple Waypoints").Replace("{locations}", locations).Replace("{options}", options));
+        writer.WriteLine(HtmlTemplate.Replace("{PageTitle}", "Standalone Waypoints").Replace("{locations}", locations).Replace("{options}", options));
       }
 
       System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
@@ -71,7 +71,7 @@ namespace Editor.ViewModel {
                                   null,
                                   x => {
 
-                                    foreach (var q in this.SimpleWaypoints) {
+                                    foreach (var q in this.StandaloneWaypoints) {
 
                                       XmlElement waypoint = Utilities.CreateWaypointElement(x, "wpt", q.Latitude, q.Longitude);
                                       x.DocumentElement.AppendChild(waypoint);

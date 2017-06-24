@@ -17,10 +17,10 @@ namespace FSH {
 
 		private short waypointCount;
 
-		public List<RouteWaypoint> Waypoints { get; set; }
+		public List<WaypointReference> Waypoints { get; set; }
 
 		public RouteWaypointHeader() {
-			this.Waypoints = new List<RouteWaypoint>();
+			this.Waypoints = new List<WaypointReference>();
     }  // End of ctor
 
     public override ushort CalculateSize() {
@@ -35,7 +35,7 @@ namespace FSH {
 			this.a = reader.ReadInt16();
 
 			for (int i = 0; i < this.waypointCount; i++) {
-				RouteWaypoint wp = new RouteWaypoint();
+				WaypointReference wp = new WaypointReference(true);
 				wp.Deserialize(reader);
 				this.Waypoints.Add(wp);
 			}

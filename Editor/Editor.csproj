@@ -75,8 +75,8 @@
     <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\MappingViewModel.cs" />
     <Compile Include="ViewModel\RouteViewModel.cs" />
-    <Compile Include="ViewModel\SimpleWaypointsSummaryViewModel.cs" />
-    <Compile Include="ViewModel\SimpleWaypointViewModel.cs" />
+    <Compile Include="ViewModel\StandaloneWaypointsSummaryViewModel.cs" />
+    <Compile Include="ViewModel\StandaloneWaypointViewModel.cs" />
     <Compile Include="ViewModel\TrackMetadataViewModel.cs" />
     <Compile Include="ViewModel\TrackPointViewModel.cs" />
     <Compile Include="ViewModel\WaypointViewModel.cs" />
@@ -89,8 +89,8 @@
     <Compile Include="Views\Route.xaml.cs">
       <DependentUpon>Route.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SimpleWaypointSummary.xaml.cs">
-      <DependentUpon>SimpleWaypointSummary.xaml</DependentUpon>
+    <Compile Include="Views\StandaloneWaypointSummary.xaml.cs">
+      <DependentUpon>StandaloneWaypointSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TracksSummary.xaml.cs">
       <DependentUpon>TracksSummary.xaml</DependentUpon>
@@ -127,7 +127,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SimpleWaypointSummary.xaml">
+    <Page Include="Views\StandaloneWaypointSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,9 +10,9 @@ using FSH;
 
 namespace Editor.ViewModel {
 
-  public class SimpleWaypointViewModel : PropertyChangedBase {
+  public class StandaloneWaypointViewModel : PropertyChangedBase {
     
-    FSH.SimpleWaypoint simpleWaypoint                = null;
+    FSH.StandaloneWaypoint simpleWaypoint                = null;
 
     public string Name {
       get {
@@ -85,7 +85,7 @@ namespace Editor.ViewModel {
       }
     }  // End of property Longitude
 
-    public SimpleWaypointViewModel(SimpleWaypoint simpleWaypoint) {
+    public StandaloneWaypointViewModel(StandaloneWaypoint simpleWaypoint) {
       this.simpleWaypoint = simpleWaypoint;
     }  // End of ctor
 

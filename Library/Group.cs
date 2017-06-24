@@ -31,19 +31,16 @@ namespace FSH {
         this.rawNameLength = (short) TrimString(value, ref this.name, ref this.rawName, false);
       }
 		}  // End of property Name
-
-		public List<long> WaypointIDs { get; set; }
-
-		public List<Waypoint> Waypoints { get; set; }
+		
+    public List<WaypointReference> Waypoints { get; set; }
 
 		public Group() {
-			this.WaypointIDs = new List<long>();
-			this.Waypoints   = new List<Waypoint>();
+      this.Waypoints = new List<WaypointReference>();
 		}  // End of ctor
 
 		public override ushort CalculateSize() {
 		  
-      int length = 2 + 2 + this.rawNameLength + 8 *this.WaypointIDs.Count;
+      int length = 2 + 2 + this.rawNameLength + 8*this.Waypoints.Count;
       
       this.Waypoints.ForEach(w => {
         length += w.CalculateSize();
@@ -61,19 +58,26 @@ namespace FSH {
 
 			System.Diagnostics.Debug.WriteLine(" (g) Name: " + this.Name + ", Items: " + this.items);
 
-			for (short i = 0; i < this.items; i++) {
-				this.WaypointIDs.Add(reader.ReadInt64());
+      // ============================================================================
+      // Within groups, Waypoints are referenced without IDS. We need to read the 
+      // collection of IDs first...
+      // ============================================================================
+      for (short i = 0; i < this.items; i++) {
+        
+        WaypointReference w = new WaypointReference(false) {
+          ID = reader.ReadInt64()
+        };
+
+        this.Waypoints.Add(w);
+
 			}
-			
-			for (short i = 0; i < this.items; i++) {
-				
-			  Waypoint wp = new Waypoint();
-				wp.Deserialize(reader);
-				
-				this.Waypoints.Add(wp);
 
-				//System.Diagnostics.Debug.WriteLine(wp.Data.Name + ": " + wp.Latitude + ", " + wp.Longitude);
-
+      // ============================================================================
+      // Now that the IDs have been read, we will read the remaining portion of data 
+      // that compromises the Waypoint reference...
+      // ============================================================================
+      for (short i = 0; i < this.items; i++) {
+        this.Waypoints[i].Deserialize(reader);
 			}
 			
 		}  // End of Deserialize
@@ -84,9 +88,8 @@ namespace FSH {
 			writer.Write(this.items);
 			writer.Write(this.rawName);
 
-			this.WaypointIDs.ForEach(id => writer.Write(id));
-
-			this.Waypoints.ForEach(wp => wp.Serialize(writer));
+      this.Waypoints.ForEach(w => writer.Write(w.ID));
+      this.Waypoints.ForEach(w => w.Serialize(writer));
 			
 		}  // End of Serialize
 

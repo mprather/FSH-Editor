@@ -105,7 +105,7 @@ namespace Editor.ViewModel {
       }
     }  // End of property SaveButtonEnabled
 
-    public SimpleWaypointsSummaryViewModel SimpleWaypointsSummaryViewModel { get; set; }
+    public StandaloneWaypointsSummaryViewModel StandaloneWaypointsSummaryViewModel { get; set; }
 
     public Visibility StartSequenceVisibility {
       get {
@@ -131,10 +131,10 @@ namespace Editor.ViewModel {
 
     public ArchiveFileViewModel() {
       
-      this.GroupViewModels                 = new ObservableCollection<GroupViewModel>();
-      this.RouteViewModels                 = new ObservableCollection<RouteViewModel>();
-      this.TrackMetadataViewModels         = new ObservableCollection<TrackMetadataViewModel>();
-      this.SimpleWaypointsSummaryViewModel = new SimpleWaypointsSummaryViewModel();
+      this.GroupViewModels                     = new ObservableCollection<GroupViewModel>();
+      this.RouteViewModels                     = new ObservableCollection<RouteViewModel>();
+      this.TrackMetadataViewModels             = new ObservableCollection<TrackMetadataViewModel>();
+      this.StandaloneWaypointsSummaryViewModel = new StandaloneWaypointsSummaryViewModel();
 
     }  // End of ctor
 
@@ -148,7 +148,7 @@ namespace Editor.ViewModel {
       this.GroupViewModels.Clear();
       this.RouteViewModels.Clear();
       this.TrackMetadataViewModels.Clear();
-      this.SimpleWaypointsSummaryViewModel.SimpleWaypoints.Clear();
+      this.StandaloneWaypointsSummaryViewModel.StandaloneWaypoints.Clear();
 
       // Fire off the task to load the file...
       Func<string, bool> asyncRequest = new Func<string, bool>(LoadArchiveFile);
@@ -189,8 +189,8 @@ namespace Editor.ViewModel {
                   case BlockType.TrackMetadata:
                     this.TrackMetadataViewModels.Add(new ViewModel.TrackMetadataViewModel(b.Data, this.fileManager.ArchiveFile.Flobs));
                     break;
-                  case BlockType.SimpleWaypoint:
-                    this.SimpleWaypointsSummaryViewModel.SimpleWaypoints.Add(new ViewModel.SimpleWaypointViewModel(b.Data as SimpleWaypoint));
+                  case BlockType.StandaloneWaypoint:
+                    this.StandaloneWaypointsSummaryViewModel.StandaloneWaypoints.Add(new ViewModel.StandaloneWaypointViewModel(b.Data as StandaloneWaypoint));
                     break;
                 }
               } else {

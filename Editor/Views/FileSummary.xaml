@@ -30,7 +30,7 @@
 				<Label Content="{Binding GroupViewModels.Count}" />
 				<Label Content="{Binding RouteViewModels.Count}" />
         <Label Content="{Binding TrackMetadataViewModels.Count}" />
-        <Label Content="{Binding SimpleWaypointsSummaryViewModel.SimpleWaypoints.Count}" />
+        <Label Content="{Binding StandaloneWaypointsSummaryViewModel.StandaloneWaypoints.Count}" />
 				<Label Content="{Binding ArchivePresent}" />
 			</StackPanel>
 
