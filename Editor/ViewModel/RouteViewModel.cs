@@ -47,6 +47,20 @@ namespace Editor.ViewModel {
       }
     }  // End of property ExportCommand
 
+    public ICommand ReverseCommand {
+      get {
+        return new DelegateCommand<RouteViewModel>(
+          "ReverseCommand",
+          parameter => {
+            if (parameter != null) {
+              parameter.Reverse();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property ExportCommand
+
     public string RouteName {
 			get {
 				return route.Name;
@@ -155,6 +169,17 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
      
     }  // End of Export
     
+    private void Reverse() {
+      
+      this.route.Reverse();
+      
+      this.WaypointViewModels.Clear();
+      this.route.WaypointSummary.Waypoints.ForEach(w => {
+        this.WaypointViewModels.Add(new WaypointViewModel(w));
+      });
+
+    }  // End of Reverse
+
   }
 
 }

@@ -29,8 +29,9 @@ namespace FSH {
     private string name                              = null;
     private string comment                           = null;
 
-		public List<long> Guids { get; set; }
-
+    private List<GenericPoint> genericPoints;
+    private List<long> waypointIDs;
+    
 		public string Name {
       get {
         if (this.name == null) {
@@ -65,13 +66,11 @@ namespace FSH {
 		public RouteEndPointHeader Endpoints { get; set; }
 
 		public RouteWaypointHeader WaypointSummary { get; set; }
-
-		public List<GenericPoint> Points { get; set; }
-
+        
 		public Route() {
 			
-		  this.Guids     = new List<long>();
-			this.Points    = new List<GenericPoint>();
+		  this.waypointIDs   = new List<long>();
+			this.genericPoints = new List<GenericPoint>();
 
 		}  // End of ctor
 
@@ -80,9 +79,9 @@ namespace FSH {
       int length = 2 + 1 + 1 + 2 + 2 + 
                    this.rawNameLength + 
                    this.commentLength + 
-                   this.Guids.Count * 8 + 
+                   this.waypointIDs.Count * 8 + 
                    this.Endpoints.CalculateSize() +
-                   this.Points.Sum(p => p.CalculateSize()) + 
+                   this.genericPoints.Sum(p => p.CalculateSize()) + 
                    this.WaypointSummary.CalculateSize();
 
       return (ushort)length;
@@ -101,7 +100,7 @@ namespace FSH {
 			this.rawComment    = reader.ReadChars(this.commentLength);
 
 			for (int i = 0; i < this.idCount; i++) {
-				this.Guids.Add(reader.ReadInt64());
+				this.waypointIDs.Add(reader.ReadInt64());
 			}
 
 			this.Endpoints = new RouteEndPointHeader();
@@ -110,7 +109,7 @@ namespace FSH {
 			for (int i = 0; i < this.idCount; i++) {
 				GenericPoint point = new GenericPoint();
 				point.Deserialize(reader);
-				this.Points.Add(point);
+				this.genericPoints.Add(point);
 			}
 
 			this.WaypointSummary = new RouteWaypointHeader();
@@ -119,6 +118,18 @@ namespace FSH {
 			System.Diagnostics.Debug.WriteLine("  (r) Name: " + this.Name.Replace('\0', '.') + ", Comment: " + this.Comment + ", a:" + this.a);
 
 		}  // End of Deserialize
+
+    public void Reverse() {
+
+      // ----------------------------------------------------------------------------
+      // NOTE: In order to reverse the route with minimum amount of change, we update
+      //       the Waypoints collection and the Guids. The GenericPoints and Endpoints
+      //       do not seem to require any update.
+      // ----------------------------------------------------------------------------
+      this.WaypointSummary.Waypoints.Reverse();
+      this.waypointIDs.Reverse();
+
+    }  // End of Reverse
 
 		public override void Serialize(BinaryWriter writer) {
 			
@@ -131,11 +142,11 @@ namespace FSH {
       writer.Write(this.rawName);
 			writer.Write(this.rawComment);
 
-			this.Guids.ForEach(g => writer.Write(g));
+			this.waypointIDs.ForEach(g => writer.Write(g));
 
 			this.Endpoints.Serialize(writer);
 			
-			this.Points.ForEach(p => p.Serialize(writer));
+			this.genericPoints.ForEach(p => p.Serialize(writer));
 
 			this.WaypointSummary.Serialize(writer);
 
