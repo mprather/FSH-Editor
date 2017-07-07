@@ -14,8 +14,11 @@
           <TextBox Text="{Binding RouteName}" Width="175" VerticalContentAlignment="Center" Padding="2,1,2,1" Margin="2" FontSize="13.333" DockPanel.Dock="Left"/>
           <Label Content="{Binding WaypointCount}" Margin="10,0,0,0" Width="175"/>
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Button x:Name="buttonReverseRoute" Command="{Binding ReverseCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="4">
+              <Image Source="/FSH Editor;component/Images/Reverse.png" Width="16" />
+            </Button>
             <Controls:GPXExportButton />
-            <Button x:Name="buttonPlotRoute" Margin="10,0,28,0" Command="{Binding CreateRouteMap}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
+            <Button x:Name="buttonPlotRoute" Margin="6,0,28,0" Command="{Binding CreateRouteMap}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
                 <Image Source="/FSH Editor;component/Images/BluePushPin.jpg" Width="14" />
             </Button>
           </StackPanel>

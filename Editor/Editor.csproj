@@ -186,6 +186,9 @@
   <ItemGroup>
     <Resource Include="Images\AppIcon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Reverse.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(Configuration)" == "Release" (

@@ -8,6 +8,7 @@ This software has been released under GPL v3.0 license.
 
 using System;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Xml;
 
@@ -16,6 +17,8 @@ using FSH;
 namespace Editor.ViewModel {
 
   public class RouteViewModel : PropertyChangedBase {
+    
+    private static Regex RouteRegex                  = new Regex("(?<start>.+)(?<marker>->?)(?<end>.+)", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
 		private FSH.Route route;
 
@@ -170,7 +173,12 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
     }  // End of Export
     
     private void Reverse() {
-      
+
+      Match match = RouteRegex.Match(this.RouteName);
+      if (match.Success) {
+        this.RouteName = match.Groups["end"].Value + match.Groups["marker"].Value + match.Groups["start"].Value;
+      }
+
       this.route.Reverse();
       
       this.WaypointViewModels.Clear();
