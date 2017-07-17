@@ -9,7 +9,7 @@
   <UserControl.Resources>
     <Storyboard x:Key="OnLoaded1">
       <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="path" RepeatBehavior="Forever">
-        <EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="360"/>
+        <EasingDoubleKeyFrame KeyTime="0:0:1.75" Value="360"/>
       </DoubleAnimationUsingKeyFrames>
     </Storyboard>
   </UserControl.Resources>
@@ -31,8 +31,8 @@
       </Path.RenderTransform>
       <Path.Fill>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0.2">
-          <GradientStop Color="#BF000000" Offset="0.1"/>
-          <GradientStop Color="#7FFFFFFF" Offset="1"/>
+          <GradientStop Color="Navy" Offset="0.1"/>
+          <GradientStop Color="Aqua" Offset="1"/>
         </LinearGradientBrush>
       </Path.Fill>
     </Path>
