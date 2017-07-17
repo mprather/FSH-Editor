@@ -27,6 +27,12 @@ namespace Editor.ViewModel {
       }
     }
 
+    public bool Valid {
+      get {
+        return trackpoint.Valid;
+      }
+    }
+
     public TrackPointViewModel (TrackPoint trackpoint) {
       this.trackpoint = trackpoint;
     }

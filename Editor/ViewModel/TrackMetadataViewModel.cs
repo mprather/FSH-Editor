@@ -75,13 +75,7 @@ namespace Editor.ViewModel {
         OnPropertyChanged("Name");
       }
     }  // End of property Name
-
-    public int Segments {
-      get {
-        return trackMetadata.Segments;
-      }
-    }  // End of Segments
-
+    
     public ObservableCollection<TrackPointViewModel> TrackPointViewModels { get; set; }
 
     public TrackMetadataViewModel(FSH.SerializableData data, List<Flob> parentCollection) {
@@ -95,7 +89,6 @@ namespace Editor.ViewModel {
       trackMetadata.GetAllTrackPoints(parentCollection).ForEach(tp => {
         this.TrackPointViewModels.Add(new TrackPointViewModel(tp));
       });
-
 
     }  // End of ctor
 
@@ -111,14 +104,17 @@ namespace Editor.ViewModel {
         string js = null;
 
         foreach (var q in this.TrackPointViewModels) {
-          if (Math.Abs(q.Latitude) < 0.00001 || Math.Abs(q.Longitude) < 0.00001) {
-            System.Diagnostics.Debug.WriteLine("Zero Points");
+          
+          if (!q.Valid) { 
             continue;
           }
+
           if (!String.IsNullOrEmpty(js)) {
             js += ",";
           }
-           js += "new Microsoft.Maps.Location(" + q.Latitude.ToString("00.00000") + "," + q.Longitude.ToString("00.00000") + ")";
+
+          js += "new Microsoft.Maps.Location(" + q.Latitude.ToString("00.00000") + "," + q.Longitude.ToString("00.00000") + ")";
+
         }
 
         writer.WriteLine(HtmlTemplate.Replace("{TrackName}", this.Name).Replace("{locations}", js));
@@ -144,8 +140,7 @@ namespace Editor.ViewModel {
 
                                     foreach (var q in this.TrackPointViewModels) {
                                       
-                                      if (Math.Abs(q.Latitude) < 0.00001 || Math.Abs(q.Longitude) < 0.00001) {
-                                        System.Diagnostics.Debug.WriteLine("Errant data (" + q.Latitude + "," + q.Longitude + ")");
+                                      if (!q.Valid) { 
                                         continue;
                                       }
 
