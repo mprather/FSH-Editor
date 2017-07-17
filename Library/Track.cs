@@ -14,7 +14,13 @@ namespace FSH {
 
   public class Track : SerializableData {
 
-		private int a;
+    // ========================================================================
+    // Note: This variable appears to be total of points in previous 
+    //       tracks (aka segments). Assume this is used internally but it does
+    //       not influence how we can build the complete collection of points.
+    // ========================================================================
+    private int a;
+
 		private short items;
 		private short b;
 	  
@@ -31,9 +37,9 @@ namespace FSH {
     }  // End of CalculateSize
 
     public override void Deserialize(BinaryReader reader) {
-
-			this.a = reader.ReadInt32();
-			System.Diagnostics.Debug.Assert(this.a == 0);
+      
+      this.a = reader.ReadInt32();
+			//System.Diagnostics.Debug.Assert(this.a == 0);
 
 			this.items = reader.ReadInt16();
 			
