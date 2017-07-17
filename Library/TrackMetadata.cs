@@ -11,7 +11,7 @@ namespace FSH {
 
 		private char a;
 
-		private short items;
+    private short items;
 		private short items2;
 		private short b;
     private int lengthInMeters;
@@ -31,8 +31,10 @@ namespace FSH {
     private char trackColor;
 
 		private char j;
-    
-		private ulong[] guids;
+
+    public byte segments;
+
+    private ulong[] guids;
 
     /// <summary>
     /// Length in NM
@@ -47,8 +49,6 @@ namespace FSH {
     }
 
     public string Name { get; set; }
-    
-    public byte Segments { get; set; }
 
     public Color Color { 
       get {
@@ -95,18 +95,18 @@ namespace FSH {
 			this.j = reader.ReadChar();
       System.Diagnostics.Debug.Assert(this.j == 0);
 
-      this.Segments = reader.ReadByte();
+      this.segments = reader.ReadByte();
 
-			this.guids = new ulong[this.Segments];
+			this.guids = new ulong[this.segments];
 
-			for (int i = 0; i < this.Segments; i++) {
+			for (int i = 0; i < this.segments; i++) {
 				
         this.guids[i] = reader.ReadUInt64();
 				System.Diagnostics.Debug.WriteLine("  (tm-g) ID: " + this.guids[i]);
         
       }
 
-      System.Diagnostics.Debug.WriteLine("  (tm) Name: " + this.Name.Replace('\0', ' ') + ", Segments: " + this.Segments + ", Items: " + this.items);
+      System.Diagnostics.Debug.WriteLine("  (tm) Name: " + this.Name.Replace('\0', ' ') + ", Segments: " + this.segments + ", Items: " + this.items);
 
     }  // End of Deserialize
 
@@ -125,7 +125,7 @@ namespace FSH {
         }
       }
 
-      if (segmentCounter != this.Segments) {
+      if (segmentCounter != this.segments) {
         throw new ApplicationException("Error: Actual track segments do not match with Track Metadata track segment value");
       }
 
@@ -166,7 +166,7 @@ namespace FSH {
       
 			writer.Write(this.j);
 
-			writer.Write(this.Segments);
+			writer.Write(this.segments);
 
 			for (int i = 0; i < this.guids.Length; i++) {
 				writer.Write(this.guids[i]);
