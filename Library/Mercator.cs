@@ -49,6 +49,7 @@ namespace FSH {
 
       double esin = Eccentricity * Math.Sin(phi0);
       return Math.PI / 2 - 2.0 * Math.Atan(Math.Exp(-north / SemiMajorAxis) * Math.Pow((1 - esin) / (1 + esin), Eccentricity / 2));
+
     }  // End of ReversePhi
 
   }  // End of Mercator class
