@@ -11,12 +11,16 @@ using System.IO;
 namespace FSH {
 
   public class RouteEndPointHeader : SerializableData {
+    
+    public int StartLatitude { get; set; }
 
-		private int startLatitude;
-		private int startLongitude;
-		private int endLatitude;
-		private int endLongitude;
-		private int a;
+    public int StartLongitude { get; set; }
+
+    public int EndLatitude { get; set; }
+
+    public int EndLongitude { get; set; }
+
+    private int a;
 		private short c;
 
 		// NOTE: this was originally specified as char[], however due to encoding translation 
@@ -30,11 +34,11 @@ namespace FSH {
 
     public override void Deserialize(BinaryReader reader) {
 
-			this.startLatitude = reader.ReadInt32();
-			this.startLongitude = reader.ReadInt32();
+			this.StartLatitude = reader.ReadInt32();
+			this.StartLongitude = reader.ReadInt32();
 
-			this.endLatitude = reader.ReadInt32();
-			this.endLongitude = reader.ReadInt32();
+			this.EndLatitude = reader.ReadInt32();
+			this.EndLongitude = reader.ReadInt32();
 
 			this.a = reader.ReadInt32();
 			this.c = reader.ReadInt16();
@@ -44,11 +48,11 @@ namespace FSH {
 
 		public override void Serialize(BinaryWriter writer) {
 			
-		  writer.Write(this.startLatitude);
-			writer.Write(this.startLongitude);
+		  writer.Write(this.StartLatitude);
+			writer.Write(this.StartLongitude);
 
-			writer.Write(this.endLatitude);
-			writer.Write(this.endLongitude);
+			writer.Write(this.EndLatitude);
+			writer.Write(this.EndLongitude);
 			
 			writer.Write(this.a);
 			writer.Write(this.c);
