@@ -13,9 +13,12 @@
         <Label Content="Standalone Waypoints" Margin="2, 0, 0, 0" Width="Auto" DockPanel.Dock="Left"/>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
           <Controls:GPXExportButton />
+          <Controls:MapButton />
+          <!--
           <Button x:Name="buttonPlotWaypoints" Margin="14,2,14,2" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
             <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
           </Button>
+          -->
         </StackPanel>
       </DockPanel>
       <DataGrid ItemsSource="{Binding StandaloneWaypoints}" AutoGenerateColumns="False" >

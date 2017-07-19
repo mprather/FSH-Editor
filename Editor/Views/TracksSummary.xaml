@@ -31,9 +31,12 @@
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
                   <Controls:GPXExportButton />
+                  <Controls:MapButton />
+                  <!--
                   <Button x:Name="buttonPlot" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}"  VerticalAlignment="Center" Cursor="Arrow" ForceCursor="True" Margin="14,0,10,0" BorderThickness="0" Background="Transparent" >
                     <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
                   </Button>
+                  -->
                 </StackPanel>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>

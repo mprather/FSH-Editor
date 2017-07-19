@@ -15,9 +15,12 @@
           <Label Content="{Binding WaypointCount}" Margin="10, 0, 0, 0" Width="175" />
           <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
             <Controls:GPXExportButton />
+            <Controls:MapButton />
+            <!--
             <Button x:Name="buttonPlotWaypoints" Margin="10,0,28,0" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
               <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
             </Button>
+            -->
           </StackPanel>
         </DockPanel>
       </Expander.Header>
