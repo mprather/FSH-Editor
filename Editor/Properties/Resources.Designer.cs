@@ -107,12 +107,13 @@ namespace Editor.Properties {
         ///    &lt;div id=&apos;myMap&apos;&gt;&lt;/div&gt;
         ///    &lt;script type=&apos;text/javascript&apos;&gt;
         ///      function loadMapScenario() {
+        ///        var l = Microsoft.Maps.Location;
         ///        var map = new Microsoft.Maps.Map(document.getElementById(&apos;myMap&apos;), {
         ///          credentials: &apos;{MapServiceKey}&apos;,
         ///          mapTypeId: Microsoft.Maps.MapTypeId.aerial
         ///        });
         ///        var locations = [{locations}];
-        ///        var polyline = new Microsoft.Maps.Polyline(locations, nul [rest of string was truncated]&quot;;.
+        ///        var polyline =  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TracksHtmlMapTemplate {
             get {
@@ -131,13 +132,13 @@ namespace Editor.Properties {
         ///    &lt;div id=&apos;myMap&apos;&gt;&lt;/div&gt;
         ///    &lt;script type=&apos;text/javascript&apos;&gt;
         ///      function loadMapScenario() {
+        ///        var l = Microsoft.Maps.Location;
         ///        var map = new Microsoft.Maps.Map(document.getElementById(&apos;myMap&apos;), {
         ///          credentials: &apos;{MapServiceKey}&apos;
         ///        });
         ///        var locations = [{locations}];
         ///        var options = [{options}];
-        ///        for (i = 0;i &lt; locations.length; i++) {
-        ///          map.entities.push(new Mic [rest of string was truncated]&quot;;.
+        ///        for (i = 0;i &lt; locations.length; i [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WaypointHtmlMapTemplate {
             get {

@@ -49,7 +49,7 @@ namespace Editor.ViewModel {
           locations += ",";
           options += ",";
         }
-        locations += "new Microsoft.Maps.Location(" + this.StandaloneWaypoints[i].Latitude.ToString("00.00000") + ", " + this.StandaloneWaypoints[i].Longitude.ToString("00.00000") + ")";
+        locations += "new l(" + this.StandaloneWaypoints[i].Latitude.ToString("00.00000") + ", " + this.StandaloneWaypoints[i].Longitude.ToString("00.00000") + ")";
         options += "{title: \"" + this.StandaloneWaypoints[i].Name + "\", color: \"red\"}";
       }
 

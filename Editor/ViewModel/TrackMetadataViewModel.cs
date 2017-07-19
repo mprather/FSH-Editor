@@ -113,7 +113,7 @@ namespace Editor.ViewModel {
             js += ",";
           }
 
-          js += "new Microsoft.Maps.Location(" + q.Latitude.ToString("00.00000") + "," + q.Longitude.ToString("00.00000") + ")";
+          js += "new l(" + q.Latitude.ToString("00.00000") + "," + q.Longitude.ToString("00.00000") + ")";
 
         }
 

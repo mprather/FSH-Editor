@@ -79,7 +79,8 @@ namespace Editor.ViewModel {
           locations += ",";
           options += ",";
         }
-        locations += "new Microsoft.Maps.Location(" + this.WaypointViewModels[i].Latitude.ToString("00.00000") + ", " + this.WaypointViewModels[i].Longitude.ToString("00.00000") + ")";
+        locations += "new l(" + this.WaypointViewModels[i].Latitude.ToString("00.000000") + ", " + 
+                                this.WaypointViewModels[i].Longitude.ToString("00.000000") + ")";
         options += "{title: \"" + this.WaypointViewModels[i].Name + "\", color: \"red\"}";
       }
       
