@@ -63,6 +63,9 @@
     <Compile Include="Controls\GPXExportButton.xaml.cs">
       <DependentUpon>GPXExportButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MapButton.xaml.cs">
+      <DependentUpon>MapButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WaitSpinner.xaml.cs">
       <DependentUpon>WaitSpinner.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,10 @@
       <DependentUpon>TracksSummary.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\GPXExportButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MapButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,7 +165,6 @@
     <None Include="Create-PublishedZip.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Images\AppIcon.pdn" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -179,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\BluePushPin.jpg" />
+    <Resource Include="Images\WaypointDelete.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MappingPin.jpg" />
