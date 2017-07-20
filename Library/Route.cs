@@ -14,12 +14,11 @@ namespace FSH {
 
   public class Route : SerializableData {
 
-		private short a;
+		private short route_a;
+    private short rwh_a;
 
-		private char rawNameLength;
+    private char rawNameLength;
 		private char commentLength;
-
-		private short idCount;
 
 		private ushort b;
 
@@ -64,79 +63,113 @@ namespace FSH {
     }  // End of property Comment
 
 		public RouteEndPointHeader Endpoints { get; set; }
+    
+    public List<WaypointReference> ReferencedWaypoints { get; set; }
 
-		public RouteWaypointHeader WaypointSummary { get; set; }
-        
-		public Route() {
+    public Route() {
 			
-		  this.waypointIDs   = new List<long>();
-			this.genericPoints = new List<GenericPoint>();
+		  this.waypointIDs          = new List<long>();
+			this.genericPoints        = new List<GenericPoint>();
+      this.ReferencedWaypoints  = new List<WaypointReference>();
 
 		}  // End of ctor
 
     public override ushort CalculateSize() {
-      
-      int length = 2 + 1 + 1 + 2 + 2 + 
-                   this.rawNameLength + 
-                   this.commentLength + 
-                   this.waypointIDs.Count * 8 + 
+
+      int length = 2 + 1 + 1 + 2 + 2 +
+                   this.rawNameLength +
+                   this.commentLength +
+                   this.waypointIDs.Count * 8 +
                    this.Endpoints.CalculateSize() +
-                   this.genericPoints.Sum(p => p.CalculateSize()) + 
-                   this.WaypointSummary.CalculateSize();
+                   this.genericPoints.Sum(p => p.CalculateSize()) +
+                   2 + 2;
+
+      this.ReferencedWaypoints.ForEach(rw => length += rw.CalculateSize());
 
       return (ushort)length;
 
     }  // End of CalculateSize
 
+    public bool DeleteWaypointReference(long targetID) {
+
+      bool itemDeleted = false;
+
+      if (this.waypointIDs.Contains(targetID)) {
+
+        this.genericPoints.RemoveAt(this.waypointIDs.IndexOf(targetID));
+        this.waypointIDs.Remove(targetID);
+
+        var q = this.ReferencedWaypoints.Find(m => m.ID == targetID);
+        if (q != null) {
+          this.ReferencedWaypoints.Remove(q);
+        }
+
+        itemDeleted = true;
+
+      }
+
+      return itemDeleted;
+
+    }  // End of DeleteWaypointReference
+
     public override void Deserialize(BinaryReader reader) {
 
-			this.a             = reader.ReadInt16();
+			this.route_a       = reader.ReadInt16();
 			this.rawNameLength = reader.ReadChar();
 			this.commentLength = reader.ReadChar();
-			this.idCount       = reader.ReadInt16();
+			short idCount      = reader.ReadInt16();
 			this.b             = reader.ReadUInt16();
 
 			this.rawName       = reader.ReadChars(this.rawNameLength);
 			this.rawComment    = reader.ReadChars(this.commentLength);
 
-			for (int i = 0; i < this.idCount; i++) {
+			for (int i = 0; i < idCount; i++) {
 				this.waypointIDs.Add(reader.ReadInt64());
 			}
 
 			this.Endpoints = new RouteEndPointHeader();
 			this.Endpoints.Deserialize(reader);
 
-			for (int i = 0; i < this.idCount; i++) {
+			for (int i = 0; i < idCount; i++) {
 				GenericPoint point = new GenericPoint();
 				point.Deserialize(reader);
 				this.genericPoints.Add(point);
 			}
 
-			this.WaypointSummary = new RouteWaypointHeader();
-			this.WaypointSummary.Deserialize(reader);
+      // ============================================================================
+      // Section formerly within RouteWaypointHeader (aka Route Header 3)
+      // ============================================================================
+      short waypointCount = reader.ReadInt16();
 
-			System.Diagnostics.Debug.WriteLine("  (r) Name: " + this.Name.Replace('\0', '.') + ", Comment: " + this.Comment + ", a:" + this.a);
+      this.rwh_a = reader.ReadInt16();
+      System.Diagnostics.Debug.Assert(rwh_a == 0, "Expected A value of 0 not found");
+      // ============================================================================
+
+      for (int i = 0; i < waypointCount; i++) {
+        WaypointReference wp = new WaypointReference(true);
+        wp.Deserialize(reader);
+        this.ReferencedWaypoints.Add(wp);
+      }
+
+      System.Diagnostics.Debug.WriteLine("  (r) Name: " + this.Name.Replace('\0', '.') + ", Comment: " + this.Comment + ", a:" + this.route_a);
 
 		}  // End of Deserialize
 
     public void Reverse() {
 
-      // ----------------------------------------------------------------------------
-      // NOTE: In order to reverse the route with minimum amount of change, we update
-      //       the Waypoints collection and the Guids. The GenericPoints and Endpoints
-      //       do not seem to require any update.
-      // ----------------------------------------------------------------------------
-      this.WaypointSummary.Waypoints.Reverse();
+      this.ReferencedWaypoints.Reverse();
       this.waypointIDs.Reverse();
+      this.genericPoints.Reverse();
+      CalculateEndpoints();
 
     }  // End of Reverse
 
 		public override void Serialize(BinaryWriter writer) {
 			
-		  writer.Write(this.a);
+		  writer.Write(this.route_a);
 			writer.Write(this.rawNameLength);
 			writer.Write(this.commentLength);
-			writer.Write(this.idCount);
+			writer.Write((short) this.waypointIDs.Count);
 			writer.Write(this.b);
 
       writer.Write(this.rawName);
@@ -148,10 +181,23 @@ namespace FSH {
 			
 			this.genericPoints.ForEach(p => p.Serialize(writer));
 
-			this.WaypointSummary.Serialize(writer);
+      writer.Write((short)this.ReferencedWaypoints.Count);
+      writer.Write(this.rwh_a);
 
-		}  // End of Serialize
+      this.ReferencedWaypoints.ForEach(wp => wp.Serialize(writer));
 
-	}  // End of Route class
+    }  // End of Serialize
+
+    private void CalculateEndpoints() {
+
+      this.Endpoints.StartLatitude   = (int)System.Math.Round(this.ReferencedWaypoints[0].Latitude * 10000000.0);
+      this.Endpoints.StartLongitude  = (int)System.Math.Round(this.ReferencedWaypoints[0].Longitude * 10000000.0);
+
+      this.Endpoints.EndLatitude     = (int)System.Math.Round(this.ReferencedWaypoints[this.ReferencedWaypoints.Count - 1].Latitude * 10000000.0);
+      this.Endpoints.EndLongitude    = (int)System.Math.Round(this.ReferencedWaypoints[this.ReferencedWaypoints.Count - 1].Longitude * 10000000.0);
+
+    }  // End of CalculateEndpoints
+
+  }  // End of Route class
 
 }
