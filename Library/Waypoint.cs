@@ -6,6 +6,7 @@ This software has been released under GPL v3.0 license.
 
 */
 
+using System;
 using System.IO;
 
 namespace FSH {
@@ -20,7 +21,10 @@ namespace FSH {
 				return this.latitude / 1e7;
 			}
 			set {
-				this.latitude = (int) (value * 1e7);
+        if (value < -90 || value > 90) {
+          throw new ArgumentException("Invalid latitude value");
+        }
+        this.latitude = (int) (value * 1e7);
 			}
 		}  // End of property Latitude
 
@@ -29,7 +33,10 @@ namespace FSH {
 				return this.longitude / 1e7;
 			}
 			set {
-				this.longitude = (int)(value * 1e7);
+        if (value < -180 || value > 180) {
+          throw new ArgumentException("Invalid longitude value");
+        }
+        this.longitude = (int)(value * 1e7);
 			}
 		}  // End of property Longitude
 
