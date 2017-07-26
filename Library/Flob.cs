@@ -53,37 +53,45 @@ namespace FSH {
 
 				System.Diagnostics.Debug.WriteLine("Position: " + reader.BaseStream.Position + ", Consumed: " + this.bytesConsumed);
 
-				Block block = new Block();
+        Block block = new Block();
 				block.Deserialize(reader);
-        
-				switch (block.Type) {
-					case BlockType.Group:
-						Group group = new Group();
-						group.Deserialize(reader);
-						block.Data = group;
-						break;
-					case BlockType.Last:
-						this.bytesConsumed = Flob.BoundarySize;
-						System.Diagnostics.Debug.WriteLine(" [Boundary Reached]");
-						break;
-					case BlockType.Route:
-						Route route = new Route();
-						route.Deserialize(reader);
-						block.Data = route;
-						break;
-					case BlockType.Track:
-						Track track = new Track();
-						track.Deserialize(reader);
-						block.Data = track;
-						break;
-					case BlockType.TrackMetadata:
-						TrackMetadata md = new TrackMetadata();
-						md.Deserialize(reader);
-						block.Data = md;
-						break;
-					case BlockType.StandaloneWaypoint:
-						StandaloneWaypoint waypoint = new StandaloneWaypoint();
-						waypoint.Deserialize(reader);
+
+        switch (block.Type) {
+          case BlockType.Group:
+            Group group = new Group() {
+              Parent = block,
+            };
+            group.Deserialize(reader);
+            block.Data = group;
+            break;
+          case BlockType.Last:
+            this.bytesConsumed = Flob.BoundarySize;
+            System.Diagnostics.Debug.WriteLine(" [Boundary Reached]");
+            break;
+          case BlockType.Route:
+            Route route = new Route() {
+              Parent = block,
+            };
+            route.Deserialize(reader);
+            block.Data = route;
+            break;
+          case BlockType.Track:
+            Track track = new Track();
+            //track.Parent = block;
+            track.Deserialize(reader);
+            block.Data = track;
+            break;
+          case BlockType.TrackMetadata:
+            TrackMetadata md = new TrackMetadata();
+            //md.Parent        = block;
+            md.Deserialize(reader);
+            block.Data = md;
+            break;
+          case BlockType.StandaloneWaypoint:
+            StandaloneWaypoint waypoint = new StandaloneWaypoint() {
+              Parent = block,
+            };
+            waypoint.Deserialize(reader);
 						block.Data = waypoint;
 						break;
 					default:

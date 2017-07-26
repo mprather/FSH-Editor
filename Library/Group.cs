@@ -32,6 +32,8 @@ namespace FSH {
       }
 		}  // End of property Name
 		
+    public Block Parent { get; set; }
+
     public List<WaypointReference> Waypoints { get; set; }
 
 		public Group() {

@@ -64,6 +64,8 @@ namespace FSH {
 
 		public RouteEndPointHeader Endpoints { get; set; }
     
+    public Block Parent { get; set; }
+
     public List<WaypointReference> ReferencedWaypoints { get; set; }
 
     public Route() {
@@ -143,13 +145,13 @@ namespace FSH {
 
       this.rwh_a = reader.ReadInt16();
       System.Diagnostics.Debug.Assert(rwh_a == 0, "Expected A value of 0 not found");
-      // ============================================================================
 
       for (int i = 0; i < waypointCount; i++) {
         WaypointReference wp = new WaypointReference(true);
         wp.Deserialize(reader);
         this.ReferencedWaypoints.Add(wp);
       }
+      // ============================================================================
 
       System.Diagnostics.Debug.WriteLine("  (r) Name: " + this.Name.Replace('\0', '.') + ", Comment: " + this.Comment + ", a:" + this.route_a);
 
@@ -181,11 +183,15 @@ namespace FSH {
 			
 			this.genericPoints.ForEach(p => p.Serialize(writer));
 
+      // ============================================================================
+      // Section formerly within RouteWaypointHeader (aka Route Header 3)
+      // ============================================================================
       writer.Write((short)this.ReferencedWaypoints.Count);
       writer.Write(this.rwh_a);
 
       this.ReferencedWaypoints.ForEach(wp => wp.Serialize(writer));
-
+      // ============================================================================
+       
     }  // End of Serialize
 
     private void CalculateEndpoints() {

@@ -19,6 +19,8 @@ namespace FSH {
 
     public WaypointData Data { get; set; }
 
+    public Block Parent { get; set; }
+
     public override ushort CalculateSize() {
       return (ushort)(8 + this.Data.CalculateSize());
     }  // End of CalculateSize
