@@ -11,9 +11,18 @@ namespace FSH {
 
 		private char a;
 
-    private short items;
-		private short items2;
-		private short b;
+    // ----------------------------------------------------------------------------
+    // NOTE: Per the documentation, the following 2 fields are item counts that 
+    //       always match (listed as fields cnt and _cnt). This is not the case if 
+    //       the track count exceeds the maximum allowable items. In the case of 
+    //       E-120W, the max items is 10k before the track starts to roll over. 
+    //       Therefore, these two fields have been identified as max and roll over counts.
+    // ----------------------------------------------------------------------------
+    private short maximumItems;
+		private short rolloverItems;
+    // ----------------------------------------------------------------------------
+
+    private short b;
     private int lengthInMeters;
 
 		private int startNorth;
@@ -68,9 +77,8 @@ namespace FSH {
 			this.a = reader.ReadChar();
       System.Diagnostics.Debug.Assert(this.a == 1);
 
-      this.items = reader.ReadInt16();
-			this.items2 = reader.ReadInt16();
-      System.Diagnostics.Debug.Assert(this.items == this.items2);
+      this.maximumItems = reader.ReadInt16();
+			this.rolloverItems = reader.ReadInt16();
 
       this.b = reader.ReadInt16();
       System.Diagnostics.Debug.Assert(this.b == 0);
@@ -106,16 +114,16 @@ namespace FSH {
         
       }
 
-      System.Diagnostics.Debug.WriteLine("  (tm) Name: " + this.Name.Replace('\0', ' ') + ", Segments: " + this.segments + ", Items: " + this.items);
+      System.Diagnostics.Debug.WriteLine("  (tm) Name: " + this.Name.Replace('\0', ' ') + ", Segments: " + this.segments + ", Items: " + this.maximumItems + ", Rollover: " + (this.rolloverItems - this.maximumItems));
 
     }  // End of Deserialize
 
-    public List<TrackPoint> GetAllTrackPoints(List<Flob> parentCollection) {
+    public List<TrackPoint> GetAllTrackPoints(List<Flob> flobs) {
 
       List<TrackPoint> list = new List<TrackPoint>();
       int segmentCounter = 0;
 
-      foreach (Flob f in parentCollection) {
+      foreach (Flob f in flobs) {
         foreach (Block block in f.Blocks.Where(b => b.Data is Track)) {
           if (this.guids.Contains(block.ID)) {
             segmentCounter++;
@@ -136,8 +144,8 @@ namespace FSH {
     public override void Serialize(BinaryWriter writer) {
 
 			writer.Write(this.a);
-			writer.Write(this.items);
-			writer.Write(this.items2);
+			writer.Write(this.maximumItems);
+			writer.Write(this.rolloverItems);
 			writer.Write(this.b);
 			writer.Write(this.lengthInMeters);
 
@@ -155,7 +163,7 @@ namespace FSH {
 			writer.Write(this.trackColor);
 
       // ----------------------------------------------------------------------
-      // Note: We have found the E-120W does not return clean data for this field.
+      // NOTE: We have found the E-120W does not return clean data for this field.
       //       In other words, there may be garbage characters persisted in 
       //       between the null-terminator and MaximumStringLength. We have 
       //       chosen to fully pad the space with null.
