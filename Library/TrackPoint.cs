@@ -74,7 +74,7 @@ namespace FSH {
 			this.invalid = reader.ReadInt16();
       System.Diagnostics.Debug.Assert(this.invalid == 0 || this.invalid == -1, "Proposed Valid flag is not 0 or -1");
 
-      System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.depth + ", c: " + this.invalid + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
+      System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.depth + ", Invalid: " + this.invalid + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
 
     }  // End of Deserialize
 
