@@ -1,5 +1,5 @@
 $logFile = "log.txt"
-$zipFile = "$((gl).ProviderPath)\FSH_Editor_v1.2.zip"
+$zipFile = "$((gl).ProviderPath)\FSH_Editor_v1.4.zip"
 
 
 # =============================================================================
