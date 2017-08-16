@@ -60,6 +60,9 @@ namespace FSH {
 
 		public ushort Temperature { get; set; }
 
+    /// <summary>
+    /// Depth in CM
+    /// </summary>
 		public int Depth { get; set; }
 
 		public Timestamp Timestamp { get; set; }
@@ -106,9 +109,9 @@ namespace FSH {
       //       at zero but that is not the case with the E-120W.
       // ----------------------------------------------------------------------
       this.i             = reader.ReadChar();
-			//System.Diagnostics.Debug.Assert(this.i == 0);
-
-			this.nameLength    = reader.ReadByte();
+      //System.Diagnostics.Debug.Assert(this.i == 0);
+      
+      this.nameLength    = reader.ReadByte();
       this.commentLength = reader.ReadByte();
 
 			this.j             = reader.ReadInt32();

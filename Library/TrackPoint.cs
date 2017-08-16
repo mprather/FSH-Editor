@@ -18,7 +18,10 @@ namespace FSH {
 
 		private ushort temperature;
 
-		private short depth;
+		/// <summary>
+    /// Depth in centimeters
+    /// </summary>
+    public short Depth { get; set; }
 
     // ========================================================================
     // Note: This variable appears to be a health state flag. If 0, the lat/lon 
@@ -69,12 +72,12 @@ namespace FSH {
 
 			this.temperature = reader.ReadUInt16();
 
-			this.depth = reader.ReadInt16();
+			this.Depth = reader.ReadInt16();
 
 			this.invalid = reader.ReadInt16();
       System.Diagnostics.Debug.Assert(this.invalid == 0 || this.invalid == -1, "Proposed Valid flag is not 0 or -1");
 
-      System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.depth + ", Invalid: " + this.invalid + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
+      System.Diagnostics.Debug.WriteLine("  (tp) North: " + this.north + ", East:" + this.east + ", Temp: " + this.temperature + ", Depth: " + this.Depth + ", Invalid: " + this.invalid + ", Lat: " + this.Latitude + ", Lon: " + this.Longitude);
 
     }  // End of Deserialize
 
@@ -83,7 +86,7 @@ namespace FSH {
 			writer.Write(this.north);
 			writer.Write(this.east);
 			writer.Write(this.temperature);
-			writer.Write(this.depth);
+			writer.Write(this.Depth);
 			writer.Write(this.invalid);
 
     }  // End of Serialize

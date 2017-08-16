@@ -23,7 +23,6 @@ namespace FSH {
     // ----------------------------------------------------------------------------
 
     private short b;
-    private int lengthInMeters;
 
 		private int startNorth;
 		private int startEast;
@@ -46,16 +45,9 @@ namespace FSH {
     private ulong[] guids;
 
     /// <summary>
-    /// Length in NM
+    /// Length in Meters
     /// </summary>
-    public double Length {
-      get {
-        return this.lengthInMeters * .00053996;
-      }
-      set {
-        this.lengthInMeters = (int)(value / .00053996);
-      }
-    }
+    public int Length { get; set; }
 
     public string Name { get; set; }
 
@@ -83,7 +75,7 @@ namespace FSH {
       this.b = reader.ReadInt16();
       System.Diagnostics.Debug.Assert(this.b == 0);
 
-      this.lengthInMeters = reader.ReadInt32();
+      this.Length = reader.ReadInt32();
 
 			this.startNorth = reader.ReadInt32();
 			this.startEast = reader.ReadInt32();
@@ -147,7 +139,7 @@ namespace FSH {
 			writer.Write(this.maximumItems);
 			writer.Write(this.rolloverItems);
 			writer.Write(this.b);
-			writer.Write(this.lengthInMeters);
+			writer.Write(this.Length);
 
 			writer.Write(this.startNorth);
 			writer.Write(this.startEast);
