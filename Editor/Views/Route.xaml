@@ -12,25 +12,36 @@
       <Expander.Header>
         <DockPanel Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" LastChildFill="False">
           <TextBox Text="{Binding RouteName}" Width="175" VerticalContentAlignment="Center" Padding="2,1,2,1" Margin="2" FontSize="13.333" DockPanel.Dock="Left"/>
-          <Label Content="{Binding WaypointCount}" Margin="10,0,0,0" Width="175"/>
+          <Label Content="{Binding WaypointCount}" Margin="10,0,0,0" Width="175" Style="{StaticResource DeleteCandidate}"/>
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-            <Button x:Name="buttonReverseRoute" Command="{Binding ReverseCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="4">
+            <Controls:Archive />
+            <Controls:DeleteWaypoints />
+            <Button Command="{Binding ReverseCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="4" ToolTip="Reverse the route's waypoints">
               <Image Source="/FSH Editor;component/Images/Reverse.png" Width="16" />
             </Button>
             <Controls:GPXExportButton />
-            <Button x:Name="buttonPlotRoute" Margin="6,0,28,0" Command="{Binding CreateRouteMap}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
-                <Image Source="/FSH Editor;component/Images/BluePushPin.jpg" Width="14" />
+            <Button Margin="6,0,28,0" Command="{Binding CreateRouteMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
+              <Image Source="/FSH Editor;component/Images/BluePushPin.png" Width="18" />
             </Button>
           </StackPanel>
         </DockPanel>
       </Expander.Header>
-        <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" AutoGenerateColumns="False" IsReadOnly="True">
-          <DataGrid.Columns>
-            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnDataErrors=true}" MinWidth="125"/>
-            <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125"/>
-            <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125"/>
-          </DataGrid.Columns>
-        </DataGrid>
+      <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" 
+                AutoGenerateColumns="False" 
+                RowStyle="{StaticResource DataGridRowSelection}" >
+        <DataGrid.Columns>
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding Path=IsSelected,  UpdateSourceTrigger=PropertyChanged}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnDataErrors=true}" MinWidth="125" IsReadOnly="True"/>
+          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125" IsReadOnly="True" ElementStyle="{StaticResource TextBlockRightAlign}"/>
+          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125" IsReadOnly="True" ElementStyle="{StaticResource TextBlockRightAlign}"/>
+        </DataGrid.Columns>
+      </DataGrid>
     </Expander>
     <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.5" CornerRadius="2" />
   </Grid>

@@ -3,12 +3,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Editor"
+        xmlns:Controls="clr-namespace:Editor.Controls" 
+        xmlns:Enums="clr-namespace:Editor.Enums" 
         xmlns:ViewModel="clr-namespace:Editor.ViewModel" 
         xmlns:Views="clr-namespace:Editor.Views" 
-        xmlns:Controls="clr-namespace:Editor.Controls" 
         x:Class="Editor.MainWindow"
         mc:Ignorable="d"
-        Title="FSH Editor v1.2" Height="525" Width="650" SizeToContent="Height" Loaded="WindowLoaded" >
+        Title="FSH Editor v1.4" 
+        Width="650" 
+        SizeToContent="Height" 
+        Loaded="WindowLoaded" 
+        Closing="WindowClosing" >
   <Window.DataContext>
     <ViewModel:ArchiveFileViewModel/>
   </Window.DataContext>
@@ -20,7 +25,7 @@
     </LinearGradientBrush>
   </Window.Background>
 
-  <TabControl x:Name="tabControl" VerticalAlignment="Top" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}" Width="Auto" TabStripPlacement="Top" Visibility="Visible" MinHeight="325">
+  <TabControl x:Name="tabControl" VerticalAlignment="Top" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}" Width="Auto" TabStripPlacement="Top" Visibility="Visible" MinHeight="400">
     <TabItem Header="Summary">
       <Grid x:Name="fileGrid" Background="#FFE5E5E5" Drop="SummaryGridDrop" AllowDrop="True" >
         <Label x:Name="labelOpenFile" Content="Drag file to open" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="32" Opacity="0.8" HorizontalContentAlignment="Center" Margin="0,60,0,0" Visibility="{Binding StartSequenceVisibility}"/>
@@ -66,6 +71,44 @@
       <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <Views:StandaloneWaypointSummary DataContext="{Binding StandaloneWaypointsSummaryViewModel}"/>
       </ScrollViewer>
+    </TabItem>
+    <TabItem Header="Settings" >
+      <Grid>
+        <StackPanel Orientation="Vertical">
+          <GroupBox Header="Units" Margin="20,12,25,0" Padding="6,6,6,12">
+            <StackPanel Orientation="Horizontal">
+              <StackPanel Orientation="Vertical" Margin="0,0,0,0" Width="200">
+                <Label Content="Distance" />
+                <RadioButton GroupName="Distance" Content="Nautical Miles" Margin="6,2" IsChecked="{Binding DistanceUnits, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static Enums:DistanceUnits.NauticalMiles}}" />
+                <RadioButton GroupName="Distance" Content="Kilometers" Margin="6,2" IsChecked="{Binding DistanceUnits, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static Enums:DistanceUnits.Kilometers}}" />
+              </StackPanel>
+              <StackPanel Orientation="Vertical" Margin="0,0,0,0"  >
+                <Label Content="Depth" />
+                <RadioButton Content="Feet" Margin="6,2" IsChecked="{Binding DepthUnits, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static Enums:DepthUnits.Feet}}" />
+                <RadioButton Content="Meters" Margin="6,2" IsChecked="{Binding DepthUnits, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static Enums:DepthUnits.Meters}}" />
+              </StackPanel>
+            </StackPanel>
+          </GroupBox>
+          
+          <GroupBox Header="GPX options" Margin="20,12,25,0" Padding="6,6,6,12">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+              <StackPanel Orientation="Vertical" Margin="0,0,0,0" Width="200" >
+                <Label Content="Save GPX as OpenCPN Layer" />
+                <CheckBox Content="Tracks" HorizontalAlignment="Left" Margin="6,4" VerticalAlignment="Top" IsChecked="{Binding SaveTrackAsLayer}" IsEnabled="{Binding CanSaveTrackAsLayer}"/>
+                <CheckBox Content="Waypoints" HorizontalAlignment="Left" Margin="6,4" VerticalAlignment="Top" IsChecked="{Binding SaveWaypointAsLayer}" IsEnabled="{Binding CanSaveWaypointAsLayer}"/>
+              </StackPanel>
+              <StackPanel Orientation="Vertical" Margin="0,0,0,0"  >
+                <Label Content="Depth Measurements" />
+                <CheckBox Content="Include depth readings" HorizontalAlignment="Left" Margin="6,4" VerticalAlignment="Top" IsChecked="{Binding IncludeDepth}" />
+                <StackPanel Orientation="Horizontal" Margin="10,8">
+                  <Label Content="Depth meter offset" Padding="0,0,20,0"/>
+                  <TextBox Width="150" Text="{Binding DepthOffset}" IsEnabled="{Binding IncludeDepth}"/>
+                </StackPanel>
+              </StackPanel>
+            </StackPanel>
+          </GroupBox>
+        </StackPanel>
+      </Grid>
     </TabItem>
   </TabControl>
 </Window>

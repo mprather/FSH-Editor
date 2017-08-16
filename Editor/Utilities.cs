@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 
 using FSH;
@@ -19,6 +20,16 @@ namespace Editor {
       root.SetAttribute("creator", "FSH Editor");
       doc.AppendChild(root);
 
+      XmlElement metadata = doc.CreateElement("metadata");
+      metadata.AppendChild(CreateNameElement(doc, "FSH Editor GPX export"));
+      if (Properties.Settings.Default.IncludeDepth) {
+        metadata.AppendChild(CreateDescriptionElement(doc, AddExportTimestamp("Depth measured in " + Properties.Settings.Default.DepthUnits)));
+      } else {
+        metadata.AppendChild(CreateDescriptionElement(doc, AddExportTimestamp("")));
+      }
+
+      root.AppendChild(metadata);
+
       if (!String.IsNullOrEmpty(itemType)) {
         
         XmlElement mainElement = doc.CreateElement(itemType);
@@ -35,17 +46,44 @@ namespace Editor {
         x(doc);
       }
 
-      // Ensure the holding folder exists...
-      System.IO.Directory.CreateDirectory(Properties.Resources.GPXFolderName);
+      string folderName    = null;
+      bool saveAsLayerFile = false;
 
-      doc.Save(Properties.Resources.GPXFolderName + "\\" + itemName + ".gpx");
+      if (itemType == null) {
+        saveAsLayerFile = Properties.Settings.Default.SaveWaypointAsLayer;
+      } else {
+        if (itemType == "trk") {
+          saveAsLayerFile = Properties.Settings.Default.SaveTrackAsLayer;
+        }
+      }
 
-      System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
-        UseShellExecute = true,
-        FileName = Properties.Resources.GPXFolderName
-      });
+      if (saveAsLayerFile) {
+        folderName = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "opencpn\\Layers");
+      } else {
+        folderName = Properties.Resources.GPXFolderName;
+      }
       
+      // Ensure the holding folder exists...
+      System.IO.Directory.CreateDirectory(folderName);
+
+      doc.Save(folderName + "\\" + itemName + ".gpx");
+
+      //if (!saveAsLayerFile) {
+        
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
+          UseShellExecute  = true,
+          FileName         = folderName
+        });
+
+      //}
+
     }  // End of CreateGPXDocument
+
+    public static XmlElement CreateCommentElement(XmlDocument x, string text) {
+      XmlElement comment = x.CreateElement("cmt");
+      comment.InnerText  = text;
+      return comment;
+    }  // End of CreateCommentElement
 
     public static XmlElement CreateDescriptionElement(XmlDocument x, string cdata) {
       
@@ -54,6 +92,24 @@ namespace Editor {
       return description;
 
     }  // End of CreateDescriptionElement
+
+    public static XmlElement CreateElevationElement(XmlDocument x, double depth) {
+      XmlElement elevation = x.CreateElement("ele");
+
+      switch (Properties.Settings.Default.DepthUnits) {
+        case Enums.DepthUnits.Feet:
+          depth /= 2.54 * 12;
+          break;
+        case Enums.DepthUnits.Meters:
+          depth /= 100;
+          break;
+      }
+
+      depth += Properties.Settings.Default.DepthMeterOffset;
+
+      elevation.InnerText  = depth.ToString();
+      return elevation;
+    }  // End of CreateElevationElement
 
     public static XmlElement CreateLinkElement(XmlDocument x) {
       

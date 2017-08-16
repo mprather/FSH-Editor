@@ -14,22 +14,69 @@
           <TextBox Text="{Binding GroupName}" Width="175" VerticalContentAlignment="Center" Padding="2,1,2,1" Margin="2" FontSize="13.333" DockPanel.Dock="Left"/>
           <Label Content="{Binding WaypointCount}" Margin="10, 0, 0, 0" Width="175" />
           <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+            <Controls:DeleteWaypoints />
             <Controls:GPXExportButton />
             <Controls:MapButton />
-            <!--
-            <Button x:Name="buttonPlotWaypoints" Margin="10,0,28,0" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
-              <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
-            </Button>
-            -->
           </StackPanel>
         </DockPanel>
       </Expander.Header>
       <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" AutoGenerateColumns="False" >
+        <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" 
+                  AutoGenerateColumns="False" 
+                  RowStyle="{StaticResource DataGridRowSelection}" >
+          <DataGrid.Resources>
+            <Style x:Key="errorEditingStyle" TargetType="{x:Type TextBox}">
+              <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                  <Setter Property="Background" Value="BlanchedAlmond"/>
+                  <Setter Property="ToolTip" 
+                          Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+            <Style TargetType="{x:Type DataGridRow}">
+              <Setter Property="ValidationErrorTemplate">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Image Source="/FSH Editor;component/Images/Error.png"  
+                           ToolTip="{Binding RelativeSource={ RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}"
+                           Margin="0"
+                           Width="18"
+                           Height="18" />
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </DataGrid.Resources>
           <DataGrid.Columns>
+            <DataGridTemplateColumn>
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <CheckBox IsChecked="{Binding Path=IsSelected,  UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="125"/>
-            <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125"/>
-            <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125"/>
+            <DataGridTextColumn Header="Latitude" 
+                                Binding="{Binding Path=Latitude, 
+                                                  StringFormat=0.000000, 
+                                                  UpdateSourceTrigger=PropertyChanged,
+                                                  ValidatesOnExceptions=True}" 
+                                MinWidth="125" 
+                                EditingElementStyle="{StaticResource errorEditingStyle}" 
+                                ElementStyle="{StaticResource TextBlockRightAlign}"
+                                IsReadOnly="True"
+                                />
+            <DataGridTextColumn Header="Longitude" 
+                                Binding="{Binding Path=Longitude, 
+                                                  StringFormat=0.000000, 
+                                                  UpdateSourceTrigger=PropertyChanged,
+                                                  ValidatesOnExceptions=True}" 
+                                MinWidth="125"
+                                EditingElementStyle="{StaticResource errorEditingStyle}" 
+                                ElementStyle="{StaticResource TextBlockRightAlign}"
+                                IsReadOnly="True"
+                                />
             <DataGridTextColumn Header="Comment" Binding="{Binding Path=Comment}" MinWidth="225"/>
           </DataGrid.Columns>
         </DataGrid>

@@ -6,8 +6,8 @@ This software has been released under GPL v3.0 license.
 
 */
 
-using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 
@@ -18,6 +18,20 @@ namespace Editor.ViewModel {
   public class GroupViewModel : MappingViewModel {
 
     private FSH.Group group;
+
+    public ICommand DeleteWaypointsCommand {
+      get {
+        return new DelegateCommand<GroupViewModel>(
+          "DeleteWaypoints",
+          parameter => {
+            if (parameter != null) {
+              parameter.DeleteWaypoints();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property DeleteWaypointsCommand
 
     public string GroupName {
 		  get {
@@ -51,7 +65,7 @@ namespace Editor.ViewModel {
 
     public ObservableCollection<WaypointViewModel> WaypointViewModels { get; set; }
 
-	  public GroupViewModel (Group group, Flob parent) {
+    public GroupViewModel (Group group, Flob parent) {
 
 			this.WaypointViewModels = new ObservableCollection<WaypointViewModel>();
 
@@ -94,6 +108,14 @@ namespace Editor.ViewModel {
       });
 
     }  // End of CreateMap
+    
+    private void DeleteWaypoints() {
+      
+      foreach (var q in this.WaypointViewModels.Where(w => w.IsSelected)) {
+        this.WaypointViewModels.Remove(q);
+      }
+
+    }  // End of DeleteWaypoints
 
     private void Export() {
 
@@ -111,6 +133,10 @@ namespace Editor.ViewModel {
                                       waypoint.AppendChild(Utilities.CreateDescriptionElement(x, Utilities.AddExportTimestamp(q.Comment)));
                                       waypoint.AppendChild(Utilities.CreateSourceElement(x));
                                       waypoint.AppendChild(Utilities.CreateLinkElement(x));
+
+                                      if (Properties.Settings.Default.IncludeDepth && q.Depth != -1) {
+                                        waypoint.AppendChild(Utilities.CreateElevationElement(x, q.Depth));
+                                      }
 
                                     }
 

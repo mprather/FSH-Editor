@@ -18,7 +18,7 @@ namespace Editor.ViewModel {
 
   public class TrackMetadataViewModel : PropertyChangedBase {
     
-    public static string HtmlTemplate                = Editor.Properties.Resources.TracksHtmlMapTemplate.Replace("{MapServiceKey}", Editor.Properties.Resources.MapServiceKey);
+    public static string HtmlTemplate                = Properties.Resources.TracksHtmlMapTemplate.Replace("{MapServiceKey}", Properties.Settings.Default.MapServiceKey);
 
     private FSH.TrackMetadata trackMetadata;
 
@@ -62,7 +62,7 @@ namespace Editor.ViewModel {
 
     public double Length {
       get {
-        return trackMetadata.Length;
+        return Properties.Settings.Default.DistanceUnits == Enums.DistanceUnits.NauticalMiles ? trackMetadata.Length * 100 / 2.54 / 12 / 6076.11549 : trackMetadata.Length / 1000.0;
       }
     }  // End of property Length
 
@@ -78,7 +78,7 @@ namespace Editor.ViewModel {
     
     public ObservableCollection<TrackPointViewModel> TrackPointViewModels { get; set; }
 
-    public TrackMetadataViewModel(FSH.SerializableData data, List<Flob> parentCollection) {
+    public TrackMetadataViewModel(FSH.SerializableData data, List<Flob> flobs) {
 
       this.TrackPointViewModels = new ObservableCollection<TrackPointViewModel>();
       
@@ -86,11 +86,15 @@ namespace Editor.ViewModel {
 
       this.trackMetadata = tm;
 
-      trackMetadata.GetAllTrackPoints(parentCollection).ForEach(tp => {
+      trackMetadata.GetAllTrackPoints(flobs).ForEach(tp => {
         this.TrackPointViewModels.Add(new TrackPointViewModel(tp));
       });
 
     }  // End of ctor
+
+    public void Refresh() {
+      this.OnPropertyChanged("Length");
+    }  // End of Refresh
 
     private void CreateMap() {
 
@@ -132,11 +136,11 @@ namespace Editor.ViewModel {
 
       Utilities.CreateGPXDocument("trk",
                                   this.Name,
-                                  "Track length(NM): " + this.trackMetadata.Length,
+                                  "Track length " + (Properties.Settings.Default.DistanceUnits == Enums.DistanceUnits.NauticalMiles ? "(NM)" : "(km)") + ": " + this.Length,
                                   x => {
 
                                     XmlElement segment = x.CreateElement("trkseg");
-                                    x.DocumentElement.FirstChild.AppendChild(segment);
+                                    x.DocumentElement.SelectSingleNode("trk").AppendChild(segment);
 
                                     foreach (var q in this.TrackPointViewModels) {
                                       
@@ -144,7 +148,13 @@ namespace Editor.ViewModel {
                                         continue;
                                       }
 
-                                      segment.AppendChild(Utilities.CreateWaypointElement(x, "trkpt", q.Latitude, q.Longitude));
+                                      XmlElement point = Utilities.CreateWaypointElement(x, "trkpt", q.Latitude, q.Longitude);
+
+                                      if (Properties.Settings.Default.IncludeDepth && q.Depth != -1) {
+                                        point.AppendChild(Utilities.CreateElevationElement(x, q.Depth));
+                                      }
+
+                                      segment.AppendChild(point);
 
                                     }
 

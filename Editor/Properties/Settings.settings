@@ -1,7 +1,33 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Editor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DepthMeterOffset" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DepthUnits" Type="Editor.Enums.DepthUnits" Scope="User">
+      <Value Profile="(Default)">Feet</Value>
+    </Setting>
+    <Setting Name="DistanceUnits" Type="Editor.Enums.DistanceUnits" Scope="User">
+      <Value Profile="(Default)">NauticalMiles</Value>
+    </Setting>
+    <Setting Name="IncludeDepth" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MapServiceKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">AiOZFEZdEmq_wc2MzSWNRiLJeW3P_vHYTHVYivmFWzPtsnKFb-WwIsxTm3WTyCwe</Value>
+    </Setting>
+    <Setting Name="MostRecentFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SaveTrackAsLayer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SaveWaypointAsLayer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UpgradeRequested" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

@@ -6,7 +6,16 @@
              xmlns:local="clr-namespace:Editor.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50">
-  <Button x:Name="buttonExport" Command="{Binding ExportCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" FontWeight="Bold" FontSize="10.667" Padding="2,1,2,1" Background="Transparent" BorderThickness="0" Margin="6,0,0,0" >
+  <Button Command="{Binding ExportCommand}" 
+          CommandParameter="{Binding}" 
+          Margin="6,0,0,0" 
+          VerticalAlignment="Center" 
+          FontWeight="Bold" 
+          FontSize="10.667" 
+          Padding="2,1,2,1" 
+          Background="Transparent" 
+          BorderThickness="0" 
+          ToolTip="Export as GPX format">
     <Grid>
       <Label Margin="2,-1">GPX</Label>
       <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.75" CornerRadius="5" />

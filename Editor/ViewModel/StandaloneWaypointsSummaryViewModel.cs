@@ -6,14 +6,29 @@ This software has been released under GPL v3.0 license.
 
 */
 
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 
 namespace Editor.ViewModel {
 
   public class StandaloneWaypointsSummaryViewModel : MappingViewModel {
+    
+    public ICommand DeleteWaypointsCommand {
+      get {
+        return new DelegateCommand<StandaloneWaypointsSummaryViewModel>(
+          "DeleteWaypoints",
+          parameter => {
+            if (parameter != null) {
+              parameter.DeleteWaypoints();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property DeleteWaypointsCommand
 
     public ICommand ExportCommand {
       get {
@@ -34,6 +49,14 @@ namespace Editor.ViewModel {
     public StandaloneWaypointsSummaryViewModel() {
       this.StandaloneWaypoints = new ObservableCollection<StandaloneWaypointViewModel>();
     }  // End of ctor
+
+    public void DeleteWaypoints() {
+
+      foreach (var q in this.StandaloneWaypoints.Where(x => x.IsSelected)) {
+        this.StandaloneWaypoints.Remove(q);
+      }
+
+    }  // End of DeleteWaypoints
 
     protected override void CreateMap() {
       

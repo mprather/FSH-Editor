@@ -15,6 +15,12 @@ namespace Editor.ViewModel {
 
     private TrackPoint trackpoint;
 
+    public double Depth {
+      get {
+        return trackpoint.Depth;
+      }
+    }
+
     public double Latitude {
       get {
         return trackpoint.Latitude;

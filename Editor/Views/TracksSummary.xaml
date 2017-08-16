@@ -24,7 +24,7 @@
       <DataGrid ItemsSource="{Binding TrackMetadataViewModels}" AutoGenerateColumns="False" IsReadOnly="False">
         <DataGrid.Columns>
           <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="125"/>
-          <DataGridTextColumn Header="Length (NM)" Binding="{Binding Path=Length, StringFormat={}{0:0.00}}"  IsReadOnly="True"/>
+          <DataGridTextColumn Header="Length" Binding="{Binding Path=Length, StringFormat={}{0:0.00}}" IsReadOnly="True" ElementStyle="{StaticResource TextBlockRightAlign}" />
           <DataGridComboBoxColumn Header="Color" SelectedItemBinding="{Binding Path=Color}" ItemsSource="{Binding Source={r:EnumBindingSource {x:Type fsh:Color}}}" IsReadOnly="False" Width="80"/>
           <DataGridTemplateColumn Header="Actions" CanUserSort="False" IsReadOnly="True">
             <DataGridTemplateColumn.CellTemplate>
@@ -32,11 +32,6 @@
                 <StackPanel Orientation="Horizontal">
                   <Controls:GPXExportButton />
                   <Controls:MapButton />
-                  <!--
-                  <Button x:Name="buttonPlot" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}"  VerticalAlignment="Center" Cursor="Arrow" ForceCursor="True" Margin="14,0,10,0" BorderThickness="0" Background="Transparent" >
-                    <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
-                  </Button>
-                  -->
                 </StackPanel>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>

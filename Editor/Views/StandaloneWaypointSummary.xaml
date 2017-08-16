@@ -12,25 +12,28 @@
       <DockPanel LastChildFill="False">
         <Label Content="Standalone Waypoints" Margin="2, 0, 0, 0" Width="Auto" DockPanel.Dock="Left"/>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+          <Controls:DeleteWaypoints />
           <Controls:GPXExportButton />
           <Controls:MapButton />
-          <!--
-          <Button x:Name="buttonPlotWaypoints" Margin="14,2,14,2" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
-            <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
-          </Button>
-          -->
         </StackPanel>
       </DockPanel>
-      <DataGrid ItemsSource="{Binding StandaloneWaypoints}" AutoGenerateColumns="False" >
+      <DataGrid ItemsSource="{Binding StandaloneWaypoints}" AutoGenerateColumns="False" RowStyle="{StaticResource DataGridRowSelection}">
         <DataGrid.Columns>
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding Path=IsSelected,  UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
           <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="125"/>
-          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude}" MinWidth="125" IsReadOnly="True"/>
-          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude}" MinWidth="125" IsReadOnly="True"/>
+          <DataGridTextColumn Header="Latitude" Binding="{Binding Path=Latitude, StringFormat=0.000000}" MinWidth="125" IsReadOnly="True" ElementStyle="{StaticResource TextBlockRightAlign}"/>
+          <DataGridTextColumn Header="Longitude" Binding="{Binding Path=Longitude, StringFormat=0.000000}" MinWidth="125" IsReadOnly="True" ElementStyle="{StaticResource TextBlockRightAlign}"/>
           <DataGridTextColumn Header="Comment" Binding="{Binding Path=Comment}" MinWidth="225"/>
           <!--<DataGridTextColumn Header="Depth" Binding="{Binding Path=Depth}" />
           <DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" />-->
         </DataGrid.Columns>
-
+        
       </DataGrid>
     </StackPanel>
     <Border BorderBrush="Gray" BorderThickness="1" Opacity="0.5" CornerRadius="2" />

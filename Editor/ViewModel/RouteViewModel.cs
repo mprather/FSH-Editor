@@ -7,7 +7,9 @@ This software has been released under GPL v3.0 license.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Xml;
@@ -20,22 +22,52 @@ namespace Editor.ViewModel {
     
     private static Regex RouteRegex                  = new Regex("(?<start>.+)(?<marker>->?)(?<end>.+)", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-		private FSH.Route route;
+		private FSH.Route route                          = null;
+    private bool selected                            = false;
+    private ushort originalStatus                    = 0;
 
-		public ICommand CreateRouteMap {
+    public ICommand ArchiveCommand {
+      get {
+        return new DelegateCommand<RouteViewModel>(
+          "ArchiveCommand",
+          parameter => {
+            if (parameter != null) {
+              parameter.Archive();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property ArchiveCommand
+
+    public ICommand CreateRouteMapCommand {
 		  get {
 				return new DelegateCommand<RouteViewModel>(
-          "CreateRouteMap",
+          "CreateRouteMapCommand",
 					parameter => {
 						if (parameter != null) {
-							parameter.DisplayRouteMap();
+							parameter.CreateRouteMap();
 						}
 					},
 					DelegateCommand<RouteViewModel>.DefaultCanExecute
 				);
 			}
 		}  // End of property CreateRouteMap
-    
+
+    public ICommand DeleteWaypointsCommand {
+      get {
+        return new DelegateCommand<RouteViewModel>(
+          "DeleteWaypoints",
+          parameter => {
+            if (parameter != null) {
+              parameter.DeleteWaypoints();
+            }
+          },
+          DelegateCommand<RouteViewModel>.DefaultCanExecute
+        );
+      }
+    }  // End of property DeleteWaypointsCommand
+
     public ICommand ExportCommand {
       get {
         return new DelegateCommand<RouteViewModel>(
@@ -64,6 +96,16 @@ namespace Editor.ViewModel {
       }
     }  // End of property ExportCommand
 
+    public bool IsSelected {
+      get {
+        return this.selected;
+      }
+      set {
+        this.selected = value;
+        OnPropertyChanged("IsSelected");
+      }
+    }  // End of property IsSelected
+
     public string RouteName {
 			get {
 				return route.Name;
@@ -76,7 +118,7 @@ namespace Editor.ViewModel {
 
     public string WaypointCount {
 			get {
-				return route.WaypointSummary.Waypoints.Count + " Waypoints";
+				return route.ReferencedWaypoints.Count + " Waypoints";
 			}
     }  // End of property WaypointCount
 
@@ -88,7 +130,7 @@ namespace Editor.ViewModel {
 
 			this.route = route;
 
-			this.route.WaypointSummary.Waypoints.ForEach(w => {
+			this.route.ReferencedWaypoints.ForEach(w => {
 
 				this.WaypointViewModels.Add(new WaypointViewModel(w));
 
@@ -96,7 +138,22 @@ namespace Editor.ViewModel {
 
 		}  // End of ctor
 
-		private void DisplayRouteMap() {
+    private void Archive() {
+      
+      if (this.route.Parent.Status != 0) {
+        this.originalStatus      = this.route.Parent.Status;
+        this.route.Parent.Status = 0;
+        this.IsSelected          = true;
+      } else {
+        this.route.Parent.Status = this.originalStatus;
+        this.IsSelected          = false;
+      }
+
+      ArchiveFileViewModel.Current.RefreshViewModels();
+
+    }  // End of ArchiveRoute
+
+		private void CreateRouteMap() {
 
       /*
       Reference url: https://msdn.microsoft.com/en-us/library/dn217138.aspx
@@ -125,7 +182,20 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
 			});
 
 		}  // End of DisplayRouteMap
-        
+    
+    private void DeleteWaypoints() {
+
+      List<WaypointViewModel> temp = new List<WaypointViewModel>(this.WaypointViewModels.Where(w => w.IsSelected));
+
+      foreach (var q in temp) {
+        this.WaypointViewModels.Remove(q);
+        this.route.DeleteWaypointReference(q.ID);
+      }
+
+      OnPropertyChanged("WaypointCount");
+
+    }  // End of DeleteWaypoints
+
     private void Export() {
 
       Utilities.CreateGPXDocument("rte",
@@ -136,8 +206,10 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
                                     XmlNamespaceManager manager = new XmlNamespaceManager(x.NameTable);
                                     x.DocumentElement.SetAttribute("xmlns:opencpn", "http://www.opencpn.org");
 
+                                    XmlNode routeElement = x.DocumentElement.SelectSingleNode("rte");
+
                                     XmlElement extensions = x.CreateElement("extensions");
-                                    x.DocumentElement.FirstChild.AppendChild(extensions);
+                                    routeElement.AppendChild(extensions);
 
                                     // ----------------------------------------------------------------------------
                                     // NOTE: OpenCPN is hard-coded to use the "opencpn" prefix, which is a bug 
@@ -154,7 +226,7 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
                                     foreach (var q in this.WaypointViewModels) {
 
                                       XmlElement point = Utilities.CreateWaypointElement(x, "rtept", q.Latitude, q.Longitude);
-                                      x.DocumentElement.FirstChild.AppendChild(point);
+                                      routeElement.AppendChild(point);
 
                                       point.AppendChild(Utilities.CreateNameElement(x, q.Name));
 
@@ -182,12 +254,12 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
       this.route.Reverse();
       
       this.WaypointViewModels.Clear();
-      this.route.WaypointSummary.Waypoints.ForEach(w => {
+      this.route.ReferencedWaypoints.ForEach(w => {
         this.WaypointViewModels.Add(new WaypointViewModel(w));
       });
 
     }  // End of Reverse
 
-  }
+  }  // End of RouteViewModel class
 
 }

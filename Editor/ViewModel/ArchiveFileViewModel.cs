@@ -11,8 +11,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
+using Editor.Enums;
 
 using FSH;
 
@@ -21,6 +24,8 @@ namespace Editor.ViewModel {
   public class ArchiveFileViewModel : PropertyChangedBase {
 
     private bool archivePresent                      = false;
+    private bool canSaveTrackAsLayer                 = false;
+    private bool canSaveWaypointAsLayer              = false;
     private bool saveButtonEnabled                   = true;
 
     private Model.FileManager fileManager            = new Model.FileManager();
@@ -41,19 +46,78 @@ namespace Editor.ViewModel {
       }
     }  // End of property ArchivePresent
     
+    public bool CanSaveTrackAsLayer {
+      get {
+        return this.canSaveTrackAsLayer;
+      }
+      set {
+        this.canSaveTrackAsLayer = value;
+        OnPropertyChanged("CanSaveTrackAsLayer");
+      }
+    }  // End of property CanSaveTrackAsLayer
+
+    public bool CanSaveWaypointAsLayer {
+      get {
+        return this.canSaveWaypointAsLayer;
+      }
+      set {
+        this.canSaveWaypointAsLayer = value;
+        OnPropertyChanged("CanSaveWaypointAsLayer");
+      }
+    }  // End of property CanSaveWaypointAsLayer
+
+    public static ArchiveFileViewModel Current { get; set; }
+
+    public double DepthOffset {
+      get {
+        return Properties.Settings.Default.DepthMeterOffset;
+      }
+      set {
+        Properties.Settings.Default.DepthMeterOffset = value;
+        OnPropertyChanged("DepthOffset");
+      }
+    }  // End of DepthOffset
+
+    public DepthUnits DepthUnits {
+      get {
+        return Properties.Settings.Default.DepthUnits;
+      }
+      set {
+        Properties.Settings.Default.DepthUnits = value;
+        OnPropertyChanged("DepthUnits");
+      }
+    }  // End of property DepthUnit
+
+    public DistanceUnits DistanceUnits {
+      get {
+        return Properties.Settings.Default.DistanceUnits;
+      }
+      set {
+        Properties.Settings.Default.DistanceUnits = value;
+        foreach(var q in this.TrackMetadataViewModels) {
+          q.Refresh();
+        }
+        OnPropertyChanged("DistanceUnits");
+      }
+    }  // End of property DepthUnit
+
     public string FileName {
       get {
         return this.fileManager.FileName;
       }
     }  // End of property FileName
-
-    public long FileSize {
-      get {
-        return this.fileManager.FileSize;
-      }
-    }  // End of property FileSize
-
+    
     public ObservableCollection<GroupViewModel> GroupViewModels { get; set; }
+
+    public bool IncludeDepth {
+      get {
+        return Properties.Settings.Default.IncludeDepth;
+      }
+      set {
+        Properties.Settings.Default.IncludeDepth = value;
+        OnPropertyChanged("IncludeDepth");
+      }
+    }  // End of property IncludeDepth
 
     public ICommand OpenMostRecentFileCommand {
       get {
@@ -94,6 +158,26 @@ namespace Editor.ViewModel {
 
       }
     }  // End of property SaveArchiveFileCommand
+
+    public bool SaveTrackAsLayer {
+      get {
+        return Properties.Settings.Default.SaveTrackAsLayer;
+      }
+      set {
+        Properties.Settings.Default.SaveTrackAsLayer = value;
+        OnPropertyChanged("SaveTrackAsLayer");
+      }
+    }  // End of property SaveTrackAsLayer
+
+    public bool SaveWaypointAsLayer {
+      get {
+        return Properties.Settings.Default.SaveWaypointAsLayer;
+      }
+      set {
+        Properties.Settings.Default.SaveWaypointAsLayer = value;
+        OnPropertyChanged("SaveWaypointAsLayer");
+      }
+    }  // End of property SaveWaypointAsLayer
 
     public bool SaveButtonEnabled {
       get {
@@ -136,6 +220,8 @@ namespace Editor.ViewModel {
       this.TrackMetadataViewModels             = new ObservableCollection<TrackMetadataViewModel>();
       this.StandaloneWaypointsSummaryViewModel = new StandaloneWaypointsSummaryViewModel();
 
+      ArchiveFileViewModel.Current             = this;
+
     }  // End of ctor
 
     public void OpenFile(string fileName) {
@@ -156,6 +242,22 @@ namespace Editor.ViewModel {
 
     }  // End of OpenFile
 
+    public void RefreshViewModels() {
+
+      ArchiveFile.Current.UpdateActiveWaypoints();
+
+      foreach(var s in this.StandaloneWaypointsSummaryViewModel.StandaloneWaypoints) {
+        s.Refresh();
+      }
+
+      foreach(var g in this.GroupViewModels) {
+        foreach (var w in g.WaypointViewModels) {
+          w.Refresh();
+        }
+      }
+
+    }  // End of RefreshViewModels
+
     private void CompleteLoadArchiveFile(IAsyncResult result) {
 
       var caller = result.AsyncState as Func<string, bool>;
@@ -170,8 +272,7 @@ namespace Editor.ViewModel {
 
         // Trigger update for properties off of the filemanager...
         OnPropertyChanged("FileName");
-        OnPropertyChanged("FileSize");
-
+        
         App.Current.Dispatcher.Invoke(() => {
           
           this.fileManager.ArchiveFile.Flobs.ForEach(f => {
@@ -232,9 +333,7 @@ namespace Editor.ViewModel {
 
       // If the read was OK, let's save the file name so that we can reuse the file later...
       if (result) {
-        using (StreamWriter writer = new StreamWriter(new IsolatedStorageFileStream("FSHEditor.LastFile", FileMode.Create, IsolatedStorageFile.GetUserStoreForAssembly()))) {
-          writer.WriteLine(fileName);
-        }
+        Properties.Settings.Default.MostRecentFile = fileName;
       }
 
       return result;
@@ -243,7 +342,7 @@ namespace Editor.ViewModel {
 
     private void OpenMostRecentFile() {
 
-      OpenFile(App.Current.Properties["ArchiveFile"] as string);
+      OpenFile(Properties.Settings.Default.MostRecentFile);
 
     }  // End of OpenMostRecentFile
 

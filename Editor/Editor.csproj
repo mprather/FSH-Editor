@@ -60,6 +60,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Archive.xaml.cs">
+      <DependentUpon>Archive.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DeleteWaypoints.xaml.cs">
+      <DependentUpon>DeleteWaypoints.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GPXExportButton.xaml.cs">
       <DependentUpon>GPXExportButton.xaml</DependentUpon>
     </Compile>
@@ -71,8 +77,12 @@
     </Compile>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="EnumBindingSourceExtension.cs" />
+    <Compile Include="Enums\DepthUnits.cs" />
+    <Compile Include="Enums\DistanceUnits.cs" />
+    <Compile Include="Enums\EnumToBooleanConverter.cs" />
     <Compile Include="Model\FileManager.cs" />
     <Compile Include="PropertyBaseChanged.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ViewModel\ArchiveFileViewModel.cs" />
     <Compile Include="ViewModel\GroupViewModel.cs" />
@@ -98,6 +108,14 @@
     <Compile Include="Views\TracksSummary.xaml.cs">
       <DependentUpon>TracksSummary.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\Archive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DeleteWaypoints.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\GPXExportButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,7 +190,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
@@ -184,17 +204,25 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BluePushPin.jpg" />
     <Resource Include="Images\WaypointDelete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\MappingPin.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Reverse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BluePushPin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MappingPin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

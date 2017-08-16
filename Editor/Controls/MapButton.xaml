@@ -5,7 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Editor.Controls"
              mc:Ignorable="d" >
-  <Button x:Name="buttonPlotWaypoints" Margin="10,0,28,0" Command="{Binding CreateMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
-    <Image Source="/FSH Editor;component/Images/MappingPin.jpg" Width="14" />
+  <Button Command="{Binding CreateMapCommand}" 
+          CommandParameter="{Binding}" 
+          Margin="10,0,28,0" 
+          HorizontalAlignment="Right" 
+          VerticalAlignment="Center" 
+          Background="Transparent" 
+          BorderThickness="0">
+    <Image Source="/FSH Editor;component/Images/MappingPin.png" Width="16" />
   </Button>
 </UserControl>

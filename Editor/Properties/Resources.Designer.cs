@@ -88,15 +88,6 @@ namespace Editor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AiOZFEZdEmq_wc2MzSWNRiLJeW3P_vHYTHVYivmFWzPtsnKFb-WwIsxTm3WTyCwe.
-        /// </summary>
-        internal static string MapServiceKey {
-            get {
-                return ResourceManager.GetString("MapServiceKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
         ///  &lt;head&gt;

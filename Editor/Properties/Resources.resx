@@ -129,10 +129,6 @@
     <value>Maps</value>
     <comment>Location where all generated maps are stored</comment>
   </data>
-  <data name="MapServiceKey" xml:space="preserve">
-    <value>AiOZFEZdEmq_wc2MzSWNRiLJeW3P_vHYTHVYivmFWzPtsnKFb-WwIsxTm3WTyCwe</value>
-    <comment>Map service key for generating maps. This is currently a test-only Azure Bing Maps key created by Maurice Prather.</comment>
-  </data>
   <data name="TracksHtmlMapTemplate" xml:space="preserve">
     <value>&lt;!DOCTYPE html&gt;
 &lt;html&gt;

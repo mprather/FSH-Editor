@@ -12,7 +12,7 @@ namespace Editor.ViewModel {
 
   public abstract class MappingViewModel : PropertyChangedBase {
     
-    public static string HtmlTemplate                = Properties.Resources.WaypointHtmlMapTemplate.Replace("{MapServiceKey}", Properties.Resources.MapServiceKey);
+    public static string HtmlTemplate                = Properties.Resources.WaypointHtmlMapTemplate.Replace("{MapServiceKey}", Properties.Settings.Default.MapServiceKey);
 
     public ICommand CreateMapCommand {
       get {
