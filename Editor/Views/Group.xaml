@@ -23,7 +23,7 @@
       <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" 
                   AutoGenerateColumns="False" 
-                  RowStyle="{StaticResource DataGridRowSelection}" >
+                  RowStyle="{StaticResource WaypointsDataGridRowStyle}" >
           <DataGrid.Resources>
             <Style x:Key="errorEditingStyle" TargetType="{x:Type TextBox}">
               <Style.Triggers>

@@ -9,7 +9,7 @@
       <Setter Property="TextAlignment" Value="Right" />
       <Setter Property="Padding" Value="4,0" />
     </Style>
-    <Style x:Key="DataGridRowSelection" TargetType="{x:Type DataGridRow}">
+    <Style x:Key="WaypointsDataGridRowStyle" TargetType="{x:Type DataGridRow}">
       <Style.Triggers>
         <DataTrigger Binding="{Binding Path=IsSelected}" Value="true">
           <Setter Property="Background" Value="#C0C0C0"/>
@@ -19,9 +19,24 @@
           <Setter Property="Background" Value="#FFFFFF"/>
           <Setter Property="ToolTip" Value="{x:Null}" />
         </DataTrigger>
+        <DataTrigger Binding="{Binding Path=IsEnabled}" Value="true">
+          <Setter Property="ToolTip" Value="{x:Null}" />
+        </DataTrigger>
         <DataTrigger Binding="{Binding Path=IsEnabled}" Value="false">
           <Setter Property="Background" Value="#FFFFFF"/>
           <Setter Property="ToolTip" Value="Item currently in use and cannot be deleted" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="RoutesDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Path=IsSelected}" Value="true">
+          <Setter Property="Background" Value="#C0C0C0"/>
+          <Setter Property="ToolTip" Value="Item slated for removal" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=IsSelected}" Value="false">
+          <Setter Property="Background" Value="#FFFFFF"/>
+          <Setter Property="ToolTip" Value="{x:Null}" />
         </DataTrigger>
       </Style.Triggers>
     </Style>

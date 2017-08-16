@@ -28,7 +28,7 @@
       </Expander.Header>
       <DataGrid ItemsSource="{Binding WaypointViewModels, ValidatesOnDataErrors=true}" 
                 AutoGenerateColumns="False" 
-                RowStyle="{StaticResource DataGridRowSelection}" >
+                RowStyle="{StaticResource RoutesDataGridRowStyle}" >
         <DataGrid.Columns>
           <DataGridTemplateColumn>
             <DataGridTemplateColumn.CellTemplate>

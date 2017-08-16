@@ -17,7 +17,7 @@
           <Controls:MapButton />
         </StackPanel>
       </DockPanel>
-      <DataGrid ItemsSource="{Binding StandaloneWaypoints}" AutoGenerateColumns="False" RowStyle="{StaticResource DataGridRowSelection}">
+      <DataGrid ItemsSource="{Binding StandaloneWaypoints}" AutoGenerateColumns="False" RowStyle="{StaticResource WaypointsDataGridRowStyle}">
         <DataGrid.Columns>
           <DataGridTemplateColumn>
             <DataGridTemplateColumn.CellTemplate>
