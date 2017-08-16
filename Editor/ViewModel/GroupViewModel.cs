@@ -6,6 +6,7 @@ This software has been released under GPL v3.0 license.
 
 */
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -110,8 +111,10 @@ namespace Editor.ViewModel {
     }  // End of CreateMap
     
     private void DeleteWaypoints() {
-      
-      foreach (var q in this.WaypointViewModels.Where(w => w.IsSelected)) {
+
+      List<WaypointViewModel> selectedItems = new List<WaypointViewModel>(this.WaypointViewModels.Where(w => w.IsSelected));
+
+      foreach (var q in selectedItems) {
         this.WaypointViewModels.Remove(q);
       }
 

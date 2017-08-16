@@ -52,7 +52,9 @@ namespace Editor.ViewModel {
 
     public void DeleteWaypoints() {
 
-      foreach (var q in this.StandaloneWaypoints.Where(x => x.IsSelected)) {
+      List<StandaloneWaypointViewModel> selectedItems = new List<StandaloneWaypointViewModel>(this.StandaloneWaypoints.Where(w => w.IsSelected));
+
+      foreach (var q in selectedItems) {
         this.StandaloneWaypoints.Remove(q);
       }
 
