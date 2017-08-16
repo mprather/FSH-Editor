@@ -109,6 +109,12 @@ namespace Editor.ViewModel {
     
     public ObservableCollection<GroupViewModel> GroupViewModels { get; set; }
 
+    public int GroupedWaypointCount {
+      get {
+        return this.GroupViewModels.Sum(g => g.WaypointViewModels.Count);
+      }
+    }  // End of GroupedWaypointCount
+
     public bool IncludeDepth {
       get {
         return Properties.Settings.Default.IncludeDepth;
@@ -303,6 +309,8 @@ namespace Editor.ViewModel {
           });  // End of foreach flob
 
         });  // End of dispatcher
+
+        OnPropertyChanged("GroupedWaypointCount");
 
       } else {
 
