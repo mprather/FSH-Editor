@@ -102,10 +102,9 @@ namespace FSH {
         this.waypointIDs.Remove(targetID);
 
         var q = this.ReferencedWaypoints.Find(m => m.ID == targetID);
-        if (q != null) {
-          this.ReferencedWaypoints.Remove(q);
-        }
+        System.Diagnostics.Trace.Assert(q != null, "Could not delete referenced waypoint " + targetID);
 
+        this.ReferencedWaypoints.Remove(q);
         itemDeleted = true;
 
       }
