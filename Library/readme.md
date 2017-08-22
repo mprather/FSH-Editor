@@ -2,13 +2,15 @@
 
 
 # Acknowledgment
-Special thanks to the authors of the OpenStreetMap wiki page that described the Archive.FSH format. The openstreetmap documentation has served as a general guideline in the creation of the library. 
-
-  https://wiki.openstreetmap.org/wiki/ARCHIVE.FSH
+Special thanks to the authors of the OpenStreetMap wiki page that described the Archive.FSH format. 
+The OpenStreetMap documentation has served as a general guideline in the creation of the library. 
 
 This information has been saved to a pdf that can be found in the Documentation folder for general offline use. 
 
-Please note that the library now supercedes the information contained in the reference document. New information and behaviors have been appropriately commented in the code and better reflects operational needs and capabilities. 
+# File format status
+The FSH library now supercedes the information contained in the reference document. 
+
+New information and behaviors have been appropriately documented in the code.
 
 
 # General design notes
