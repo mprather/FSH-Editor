@@ -45,15 +45,6 @@ namespace FSH {
 		public override void Serialize(BinaryWriter writer) {
 
       if (this.Data != null) {
-        
-        #if DEBUG
-        ushort temp = CalculateSize();
-
-        if (temp != this.DataLength) {
-          System.Diagnostics.Debug.WriteLine("Error: size calculation differs. Expected: " + this.DataLength + " , Actual: " + temp + ", Type: " + this.Type);
-        }
-        #endif
-
         this.DataLength = CalculateSize();
       } else {
         System.Diagnostics.Debug.Assert (this.DataLength == 65535, "Unexpected DataLength value");
