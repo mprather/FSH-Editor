@@ -2,9 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Editor"
-             xmlns:e="clr-namespace:Editor.Enums"
+             xmlns:c="clr-namespace:Editor.Converters"
              StartupUri="MainWindow.xaml">
   <Application.Resources>
+    <c:NotConverter x:Key="NotConverter" />
+    <c:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    <ContextMenu x:Key="WaypointContextMenu" 
+                 DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="Remove from all Routes" 
+                IsEnabled="{Binding IsEnabled, Converter= {StaticResource NotConverter}}" 
+                Command="{Binding PurgeFromRoutesCommand}" CommandParameter="{Binding}"/>
+    </ContextMenu>
     <Style x:Key="TextBlockRightAlign" TargetType="TextBlock">
       <Setter Property="TextAlignment" Value="Right" />
       <Setter Property="Padding" Value="4,0" />
@@ -27,6 +35,7 @@
           <Setter Property="ToolTip" Value="Item currently in use and cannot be deleted" />
         </DataTrigger>
       </Style.Triggers>
+      <Setter Property="ContextMenu" Value="{StaticResource WaypointContextMenu}" />
     </Style>
     <Style x:Key="RoutesDataGridRowStyle" TargetType="{x:Type DataGridRow}">
       <Style.Triggers>
@@ -52,6 +61,5 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
-    <e:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
   </Application.Resources>
 </Application>

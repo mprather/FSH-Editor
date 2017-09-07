@@ -252,11 +252,11 @@ namespace Editor.ViewModel {
 
       ArchiveFile.Current.UpdateActiveWaypoints();
 
-      foreach(var s in this.StandaloneWaypointsSummaryViewModel.StandaloneWaypoints) {
+      foreach (var s in this.StandaloneWaypointsSummaryViewModel.StandaloneWaypoints) {
         s.Refresh();
       }
 
-      foreach(var g in this.GroupViewModels) {
+      foreach (var g in this.GroupViewModels) {
         foreach (var w in g.WaypointViewModels) {
           w.Refresh();
         }

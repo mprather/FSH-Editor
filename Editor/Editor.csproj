@@ -79,8 +79,9 @@
     <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="Enums\DepthUnits.cs" />
     <Compile Include="Enums\DistanceUnits.cs" />
-    <Compile Include="Enums\EnumToBooleanConverter.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Model\FileManager.cs" />
+    <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="PropertyBaseChanged.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />

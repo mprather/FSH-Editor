@@ -183,14 +183,17 @@ Stroke dash style includes the following values: Solid, ShortDash, ShortDot, Sho
 
 		}  // End of DisplayRouteMap
     
-    private void DeleteWaypoints() {
+    public void DeleteWaypoints() {
 
       List<WaypointViewModel> temp = new List<WaypointViewModel>(this.WaypointViewModels.Where(w => w.IsSelected));
 
       foreach (var q in temp) {
-        this.WaypointViewModels.Remove(q);
-        this.route.DeleteWaypointReference(q.ID);
+        if (this.route.DeleteWaypointReference(q.ID)) {
+          this.WaypointViewModels.Remove(q);
+        }
       }
+
+      ArchiveFile.Current.UpdateActiveWaypoints();
 
       OnPropertyChanged("WaypointCount");
 

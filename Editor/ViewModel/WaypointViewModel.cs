@@ -6,7 +6,9 @@ This software has been released under GPL v3.0 license.
 
 */
 
+using System;
 using System.Linq;
+using System.Windows.Input;
 
 using FSH;
 
@@ -16,8 +18,34 @@ namespace Editor.ViewModel {
 
     private FSH.WaypointReference waypoint;
 
-    private bool selected;
-    
+    private string routes                            = null;
+    private bool selected                            = false;
+
+    public ICommand PurgeFromRoutesCommand {
+      get {
+
+        return new DelegateCommand<WaypointViewModel>(
+            "PurgeFromRoutesCommand",
+            parameter => {
+              if (parameter != null) {
+                parameter.PurgeFromRoutes();
+              }
+            },
+            DelegateCommand<ArchiveFileViewModel>.DefaultCanExecute
+        );
+
+      }
+    }  // End of PurgeFromRoutes
+
+    public string Routes {
+      get {
+        if (this.routes == null) {
+          DiscoverUsage();
+        }
+        return this.routes;
+      }
+    }  // End of property Routes
+
     public long ID {
       get {
         return waypoint.ID;
@@ -117,8 +145,58 @@ namespace Editor.ViewModel {
     }  // End of ctor
     
     public void Refresh() {
+      
       OnPropertyChanged("IsEnabled");
+      
+      DiscoverUsage();
+      OnPropertyChanged("Routes");
+
     }  // End of Refresh
-    
+
+    private void DiscoverUsage() {
+
+      this.routes = null;
+
+      ArchiveFile.Current.Flobs.ForEach(f => {
+        foreach (var q in f.Blocks.Where(b => b.Status != 0 && b.Type == BlockType.Route)) {
+          Route r = q.Data as Route;
+          foreach (var w in r.ReferencedWaypoints.Where(rw => rw.ID == this.ID)) {
+            if (!String.IsNullOrEmpty(this.routes)) {
+              this.routes += Environment.NewLine;
+            }
+            this.routes += r.Name;  
+          }
+        }
+      });
+
+      if (String.IsNullOrEmpty(this.routes)) {
+        this.routes = "";
+      }
+      
+    }  // End of DiscoverUsage
+
+    private void PurgeFromRoutes() {
+
+      bool itemFound = false;
+
+      foreach (var r in ArchiveFileViewModel.Current.RouteViewModels) {
+        
+        itemFound = false;
+        
+        foreach (var wvm in r.WaypointViewModels.Where(w=> w.ID == this.ID)) {
+          wvm.IsSelected = true;
+          itemFound = true;
+        }
+
+        if (itemFound) { 
+          r.DeleteWaypoints();
+        }
+
+      }
+
+      ArchiveFileViewModel.Current.RefreshViewModels();
+
+    }  // End of PurgeFromRoutes
+
   }  // End of WaypointViewModel class
 }

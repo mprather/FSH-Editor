@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace Editor.Enums {
+namespace Editor.Converters {
 
   public class EnumToBooleanConverter : IValueConverter {
 
