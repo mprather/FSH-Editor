@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Editor.Controls"
              mc:Ignorable="d" 
              >
-  <Button Command="{Binding ArchiveCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="6,2" ToolTip="Delete">
-    <Image Source="/FSH Editor;component/Images/Delete.png" Width="17" />
+  <Button Command="{Binding ArchiveCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" Padding="2" ToolTip="Delete" Height="28" Width="28" Margin="2,0" BorderThickness="0" >
+    <Image Source="/FSH Editor;component/Images/Delete.png" />
   </Button>
 </UserControl>

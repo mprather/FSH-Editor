@@ -16,12 +16,12 @@
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
             <Controls:Archive />
             <Controls:DeleteWaypoints />
-            <Button Command="{Binding ReverseCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Padding="4" ToolTip="Reverse the route's waypoints">
-              <Image Source="/FSH Editor;component/Images/Reverse.png" Width="16" />
+            <Button Command="{Binding ReverseCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" Padding="2" ToolTip="Reverse the route's waypoints" Height="28" Width="28" Margin="2,0" BorderThickness="0" >
+              <Image Source="/FSH Editor;component/Images/Reverse.png" />
             </Button>
             <Controls:GPXExportButton />
-            <Button Margin="6,0,28,0" Command="{Binding CreateRouteMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" >
-              <Image Source="/FSH Editor;component/Images/BluePushPin.png" Width="18" />
+            <Button Margin="2,0,28,0" Command="{Binding CreateRouteMapCommand}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" Height="28" Width="28" BorderThickness="0" >
+              <Image Source="/FSH Editor;component/Images/BluePushPin.png" />
             </Button>
           </StackPanel>
         </DockPanel>

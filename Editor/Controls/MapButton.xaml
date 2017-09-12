@@ -7,11 +7,14 @@
              mc:Ignorable="d" >
   <Button Command="{Binding CreateMapCommand}" 
           CommandParameter="{Binding}" 
-          Margin="10,0,28,0" 
+          Margin="2,0,28,0" 
           HorizontalAlignment="Right" 
           VerticalAlignment="Center" 
           Background="Transparent" 
+          Padding="2"
+          Height="28" 
+          Width="28" 
           BorderThickness="0">
-    <Image Source="/FSH Editor;component/Images/MappingPin.png" Width="16" />
+    <Image Source="/FSH Editor;component/Images/MappingPin.png" />
   </Button>
 </UserControl>

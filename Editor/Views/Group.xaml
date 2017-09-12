@@ -77,7 +77,7 @@
                                 ElementStyle="{StaticResource TextBlockRightAlign}"
                                 IsReadOnly="True"
                                 />
-            <DataGridTextColumn Header="Used in" Binding="{Binding Routes, Mode=OneWay}" MinWidth="25" />
+            <DataGridTextColumn Header="Used in" Binding="{Binding Routes, Mode=OneWay}" MinWidth="50" />
             <DataGridTextColumn Header="Comment" Binding="{Binding Path=Comment}" MinWidth="225"/>
           </DataGrid.Columns>
         </DataGrid>
