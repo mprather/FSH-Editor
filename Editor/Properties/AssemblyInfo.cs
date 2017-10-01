@@ -13,7 +13,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FSH Editor")]
-[assembly: AssemblyDescription("Editor for Raymarine FSH file format")]
+[assembly: AssemblyDescription("Editor for Raymarine Archive.FSH file format")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Okean Voyaging")]
 [assembly: AssemblyProduct("FSH Editor")]
@@ -56,5 +56,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyFileVersion("1.5.0.0")]

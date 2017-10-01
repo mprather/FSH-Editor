@@ -147,6 +147,12 @@ namespace Editor.ViewModel {
      }
     }  // End of OperationalTabVisibility
 
+    public string ProductVersion {
+      get {
+        return "Version " + System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+      }
+    }  // End of ProductVersion
+
     public ObservableCollection<RouteViewModel> RouteViewModels { get; set; }
 
     public ICommand SaveArchiveFileCommand {
