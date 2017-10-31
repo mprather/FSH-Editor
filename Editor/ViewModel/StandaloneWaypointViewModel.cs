@@ -7,6 +7,7 @@ This software has been released under GPL v3.0 license.
 */
 
 using System.Linq;
+using System.Windows.Input;
 using FSH;
 
 namespace Editor.ViewModel {
@@ -16,6 +17,22 @@ namespace Editor.ViewModel {
     private StandaloneWaypoint standaloneWaypoint      = null;
     private bool selected                              = false;
     private ushort originalStatus                      = 0;
+
+    public ICommand PurgeFromRoutesCommand {
+      get {
+
+        return new DelegateCommand<StandaloneWaypointViewModel>(
+            "PurgeFromRoutesCommand",
+            parameter => {
+              if (parameter != null) {
+                parameter.PurgeFromRoutes();
+              }
+            },
+            DelegateCommand<ArchiveFileViewModel>.DefaultCanExecute
+        );
+
+      }
+    }  // End of PurgeFromRoutes
 
     public string Comment {
       get {
@@ -107,6 +124,29 @@ namespace Editor.ViewModel {
     public void Refresh() {
       OnPropertyChanged("IsEnabled");
     }  // End of Refresh
+
+    private void PurgeFromRoutes() {
+      
+      bool itemFound = false;
+
+      foreach (var r in ArchiveFileViewModel.Current.RouteViewModels) {
+
+        itemFound = false;
+
+        foreach (var wvm in r.WaypointViewModels.Where(w => (ulong)w.ID == standaloneWaypoint.Parent.ID)) {
+          wvm.IsSelected = true;
+          itemFound = true;
+        }
+
+        if (itemFound) {
+          r.DeleteWaypoints();
+        }
+
+      }
+
+      ArchiveFileViewModel.Current.RefreshViewModels();
+
+    }  // End of PurgeFromRoutes
 
   }  // End of SimpleWaypointViewModel class
 }

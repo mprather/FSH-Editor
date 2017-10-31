@@ -12,49 +12,49 @@ using System.IO;
 
 namespace FSH {
 
-	public class Flob : SerializableData {
-	  
-		public static long BoundarySize = 0x10000;
+  public class Flob : SerializableData {
 
-	  private long bytesConsumed;
+    public static long BoundarySize = 0x10000;
 
-		private char[] header;
-		private short f;
-		private short g;
+    private long bytesConsumed;
 
-		public FlobType FlobType { get; set; }
+    private char[] header;
+    private short f;
+    private short g;
 
-		public long StartOffset { get; set; }
+    public FlobType FlobType { get; set; }
 
-		public List<Block> Blocks { get; set; }
+    public long StartOffset { get; set; }
 
-		public Flob() {
-      
-			this.Blocks = new List<Block>();
+    public List<Block> Blocks { get; set; }
 
-			this.header = "RAYFLOB1".ToCharArray();
+    public Flob() {
 
-			this.f = 1;
-			this.g = 1;
+      this.Blocks = new List<Block>();
 
-		}
-		
-		public override void Deserialize(BinaryReader reader) {
-			
-			reader.BaseStream.Position = this.StartOffset;
-			System.Diagnostics.Debug.WriteLine("Flob Position:" + reader.BaseStream.Position);
+      this.header = "RAYFLOB1".ToCharArray();
 
-			this.header    = reader.ReadChars(8);
-			this.f         = reader.ReadInt16();
-			this.g         = reader.ReadInt16(); 
-			this.FlobType  = (FlobType)reader.ReadUInt16();
+      this.f = 1;
+      this.g = 1;
 
-			while (this.bytesConsumed < Flob.BoundarySize) {
+    }
 
-				System.Diagnostics.Debug.WriteLine("Position: " + reader.BaseStream.Position + ", Consumed: " + this.bytesConsumed);
+    public override void Deserialize(BinaryReader reader) {
+
+      reader.BaseStream.Position = this.StartOffset;
+      System.Diagnostics.Debug.WriteLine("Flob Position:" + reader.BaseStream.Position);
+
+      this.header    = reader.ReadChars(8);
+      this.f         = reader.ReadInt16();
+      this.g         = reader.ReadInt16();
+      this.FlobType  = (FlobType)reader.ReadUInt16();
+
+      while (this.bytesConsumed < Flob.BoundarySize) {
+
+        System.Diagnostics.Debug.WriteLine("Position: " + reader.BaseStream.Position + ", Consumed: " + this.bytesConsumed);
 
         Block block = new Block();
-				block.Deserialize(reader);
+        block.Deserialize(reader);
 
         switch (block.Type) {
           case BlockType.Group:
@@ -92,47 +92,47 @@ namespace FSH {
               Parent = block,
             };
             waypoint.Deserialize(reader);
-						block.Data = waypoint;
-						break;
-					default:
-						throw new NotImplementedException();
-				}
+            block.Data = waypoint;
+            break;
+          default:
+            throw new NotImplementedException();
+        }
 
         this.Blocks.Add(block);
 
-				if (this.bytesConsumed != Flob.BoundarySize) {
+        if (this.bytesConsumed != Flob.BoundarySize) {
 
-					if (block.DataLength % 2 != 0) {
-						System.Diagnostics.Debug.WriteLine(" -- Skipping byte --");
-						reader.ReadByte();
-					}
+          if (block.DataLength % 2 != 0) {
+            System.Diagnostics.Debug.WriteLine(" -- Skipping byte --");
+            reader.ReadByte();
+          }
 
-					this.bytesConsumed = reader.BaseStream.Position - this.StartOffset;
+          this.bytesConsumed = reader.BaseStream.Position - this.StartOffset;
 
-				}
+        }
 
-			}
+      }
 
-		}  // End of Deserialize
+    }  // End of Deserialize
 
-		public override void Serialize(BinaryWriter writer) {
+    public override void Serialize(BinaryWriter writer) {
 
-			writer.Write(this.header);
-			writer.Write(this.f);
-			writer.Write(this.g);
-			writer.Write((ushort)this.FlobType);
+      writer.Write(this.header);
+      writer.Write(this.f);
+      writer.Write(this.g);
+      writer.Write((ushort)this.FlobType);
 
-			this.Blocks.ForEach(b => {
-				b.Serialize(writer);
-				if (b.Type == BlockType.Last) {
-				  while (writer.BaseStream.Position < (this.StartOffset + Flob.BoundarySize)) {
-						writer.Write((byte)0xFF);
-					}
-				}
-			});
+      this.Blocks.ForEach(b => {
+        b.Serialize(writer);
+        if (b.Type == BlockType.Last) {
+          while (writer.BaseStream.Position < (this.StartOffset + Flob.BoundarySize)) {
+            writer.Write((byte)0xFF);
+          }
+        }
+      });
 
-		}  // End of Serialize
+    }  // End of Serialize
 
-	}  // End of Flob class
+  }  // End of Flob class
 
 }

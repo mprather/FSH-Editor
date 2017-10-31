@@ -15,7 +15,7 @@ namespace FSH {
   /// </summary>
   public class StandaloneWaypoint : SerializableData {
 
-	  public long ID { get; set; }
+    public long ID { get; set; }
 
     public WaypointData Data { get; set; }
 
@@ -26,20 +26,20 @@ namespace FSH {
     }  // End of CalculateSize
 
     public override void Deserialize(BinaryReader reader) {
-			
-		  this.ID = reader.ReadInt64();
-			
-			this.Data = new WaypointData();
-			this.Data.Deserialize(reader);
 
-			System.Diagnostics.Debug.WriteLine("  (swp) ID: " + this.ID);
+      this.ID = reader.ReadInt64();
 
-		}  // End of Deserialize
+      this.Data = new WaypointData();
+      this.Data.Deserialize(reader);
 
-		public override void Serialize(BinaryWriter writer) {
+      System.Diagnostics.Debug.WriteLine("  (swp) ID: " + this.ID);
 
-			writer.Write(this.ID);
-			this.Data.Serialize(writer);
+    }  // End of Deserialize
+
+    public override void Serialize(BinaryWriter writer) {
+
+      writer.Write(this.ID);
+      this.Data.Serialize(writer);
 
     }  // End of Serialize
 

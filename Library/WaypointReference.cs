@@ -19,7 +19,8 @@ namespace FSH {
     /// matches the id of the parent. This provides a relationship between 
     /// Groups and WaypointReferences.
     /// However, if the parent waypoint is a standalone waypoint, this value
-    /// appears to be unique and does not provide any relational assistance.
+    /// is unique and does not provide any direct relational assistance. The 
+    /// correlation is via Block.ID.
     /// </summary>
     public long ID { get; set; }
 
